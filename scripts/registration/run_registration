@@ -1,0 +1,54 @@
+#!/bin/bash
+
+# # take arguments from command line that are needed for the registration
+
+# Parse arguments
+for arg in "$@"
+do
+    case $arg in
+        -dp=*|--dataset_path=*)
+        DATASET_PATH="${arg#*=}"
+        shift
+        ;;
+        -dn=*|--dataset_name=*)
+        DATASET_NAME="${arg#*=}"
+        shift
+        ;;
+        -ap=*|--atlas_path=*)
+        ATLAS_PATH="${arg#*=}"
+        shift
+        ;;
+        -sp=*|--save_path=*)
+        SAVE_PATH="${arg#*=}"
+        shift
+        ;;
+        -as=*|--array_size=*)
+        ARRAY_SIZE="${arg#*=}"
+        shift
+        ;;
+        -l=*|--labels=*)
+        LABELS="${arg#*=}"
+        shift
+        ;;
+        -nc=*|--necrotic_core=*)
+        NECROTIC_CORE="${arg#*=}"
+        shift
+        ;;
+        -er=*|--enhancing_region=*)
+        ENHANCING_REGION="${arg#*=}"
+        shift
+        ;;
+        -e=*|--edema=*)
+        EDEMA="${arg#*=}"
+        
+        shift
+        ;;
+    esac
+done
+
+
+# Activate the environment
+conda activate CaPTk
+
+# Run the registration script
+python src/main.py --dataset_path "${DATASET_PATH}" --dataset_name "${DATASET_NAME}" --atlas_path "${ATLAS_PATH}" --save_path "${SAVE_PATH}" --array_size $ARRAY_SIZE --labels $LABELS --necrotic_core $NECROTIC_CORE --enhancing_region $ENHANCING_REGION --edema $EDEMA
