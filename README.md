@@ -1,2 +1,3 @@
 # master_thesis
-Private repo for master thesis related code
+
+Welcome to Gonçalo's Master Thesis Repo. Coding horror lurk around every corner, please stay here by the fire where it's safe
