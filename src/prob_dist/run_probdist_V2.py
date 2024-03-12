@@ -146,11 +146,3 @@ class ProcessNiftiData:
 
         plt.savefig(f"{self.save_path}/{dataset_name}_surface_plot_{name}.png")
 
-
-# dataset_path = r'C:\Users\gaspa\Desktop\segmentation_test\Datasets\BRAIN-TUMO-PROGRESSION_DATASET\Brain-Tumor-Progression\sub-*\BraTSPipeline_sub*\brainTumorMask_SRI.nii'
-# save_path = r'C:\Users\gaspa\Desktop\segmentation_test\prob_dist_results\BRAIN-TUMOR-PROGRESSION_DATASET'
-# atlas_path = r'C:\Users\gaspa\Desktop\segmentation_test\Atlases\mni_icbm152_t1_tal_nlin_asym_09a_brain_only\mni_icbm152_t1_tal_nlin_asym_09a_brain_only.nii'
-# dataset_name = 'BTP'
-
-# process = ProcessNiftiData(dataset_path=dataset_path, dataset_name=dataset_name, atlas_path=atlas_path, save_path=save_path, array_size=(240,240,155), labels=True, necrotic_core=1, enhancing_region=3, edema=2)
-# process.process_data()
