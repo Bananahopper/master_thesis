@@ -1,0 +1,50 @@
+Labels,Tumor in region
+angular gyrus,0.012115294475443275
+central opercular cortex,0.016523601464855864
+"cingulate gyrus, anterior division",0.012007294860610107
+"cingulate gyrus, posterior division",0.007546835880622327
+cuneal cortex,0.0022783439063158877
+frontal medial cortex,0.0017657357446247092
+frontal operculum cortex,0.004474399628211516
+frontal oribtal cortex,0.009123384923240602
+frontal pole,0.02725684353654968
+heschls gyrus,0.00613567028663365
+"inferior frontal gyrus, pars opercularis",0.005848141022286268
+"inferior frontal gyrus, pars triangularis",0.0028801472019709348
+"inferior temporal gyrus, anterior division",0.003073442729177223
+"inferior temporal gyrus, posterior division",0.00925493423420247
+"inferior temporal gyrus, temporooccipital part",0.005976021712445716
+insular cortex,0.022452329557830192
+intracalcarine cortex,0.0029309459256624776
+juxtapositional lobule cortex,0.004044276989768216
+"lateral occipital cortex, inferior division",0.009743967466853012
+"lateral occipital cortex, superior division",0.028577365329347765
+lingual gyrus,0.005168621826287924
+middle frontal gyrus,0.01778523586645806
+"middle temporal gyrus, anterior division",0.005702654302929452
+"middle temporal gyrus, posterior division",0.017508926245842597
+"middle temporal gyrus, temporooccipital part",0.010403720214949373
+occipital fusiform gyrus,0.002012268160842571
+occipital pole,0.002654157430923145
+paracingulate gyrus,0.00996020385762335
+"parahippocampal gyrus, anterior division",0.004667861491883371
+"parahippocampal gyrus, posterior division",0.002859242167912559
+parietal operculum cortex,0.00948177798220964
+planum polare,0.008003022173631368
+planum temporale,0.007691458330745784
+postcentral gyrus,0.024609166565025587
+precentral gyrus,0.03119172926487333
+precuneous cortex,0.01636555799902456
+subcallosal cortex,0.003499973585804941
+superior frontal gyrus,0.014675827249012115
+superior parietal lobule,0.01207715922670297
+"superior temporal gyrus, anterior division",0.003943331074646388
+"superior temporal gyrus, posterior division",0.012353535739033802
+supracalcarine cortex,0.0004751968780208994
+"supramarginal gyrus, anterior division",0.00680874669048984
+"supramarginal gyrus, posterior division",0.010255057399272778
+"temporal fusiform cortex, anterior division",0.0027386790585346723
+"temporal fusiform cortex, posterior division",0.007994119280642859
+temporal occipital fusiform cortex,0.004258680319923933
+temporal pole,0.026437526832533913
+void,0.5244075859075659

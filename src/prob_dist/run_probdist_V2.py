@@ -4,6 +4,8 @@ import nibabel as nib
 import matplotlib.pyplot as plt
 import logging
 import os
+import logging
+import argparse
 
 class ProcessNiftiData:
     def __init__(self,
@@ -26,15 +28,14 @@ class ProcessNiftiData:
         self.edema = edema
         self.labels = labels
         self.array_size = array_size
-        
-        logging.info(f"This is where the fun begins...")
-        logging.info(f"Save path: {save_path}")
-        logging.info(f"Dataset path: {dataset_path}")
-
 
     def process_data(self):
         # Get all the nifti files
-        files = glob.glob(self.dataset_path)
+        files = []
+        for root, dirs, files_list in os.walk(self.dataset_path):
+            for subdir in dirs:
+                for file in glob.glob(os.path.join(root, subdir, "*_seg.nii.gz")):
+                    files.append(file)
 
         # Get the affine matrix
         sample = self.atlas_path
@@ -145,4 +146,5 @@ class ProcessNiftiData:
         ax.set_zlabel("Values (10^3)")
 
         plt.savefig(f"{self.save_path}/{dataset_name}_surface_plot_{name}.png")
+
 
