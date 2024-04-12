@@ -1,0 +1,50 @@
+Labels,Tumor in region
+void,51.391400033399826
+frontal pole,2.9782683310694162
+insular cortex,2.0456702948184367
+superior frontal gyrus,1.7646023815938134
+middle frontal gyrus,1.5773110983705902
+"inferior frontal gyrus, pars triangularis",0.3379781810510908
+"inferior frontal gyrus, pars opercularis",0.5562327165044998
+precentral gyrus,3.148949275136802
+temporal pole,1.7768633043078579
+"superior temporal gyrus, anterior division",0.27194399429403815
+"superior temporal gyrus, posterior division",1.6984061472171221
+"middle temporal gyrus, anterior division",0.4118918329543925
+"middle temporal gyrus, posterior division",2.2345761393991115
+"middle temporal gyrus, temporooccipital part",1.8134352889150593
+"inferior temporal gyrus, anterior division",0.17224751512400133
+"inferior temporal gyrus, posterior division",0.8765642675920713
+"inferior temporal gyrus, temporooccipital part",0.8736773006817777
+postcentral gyrus,2.051814516258288
+superior parietal lobule,0.9504225885299252
+"supramarginal gyrus, anterior division",0.38769579585072844
+"supramarginal gyrus, posterior division",0.9164061633004447
+angular gyrus,1.325037694487837
+"lateral occipital cortex, superior division",3.8544673570148125
+"lateral occipital cortex, inferior division",1.730592287521081
+intracalcarine cortex,0.4693787353498851
+frontal medial cortex,0.28601901077769587
+juxtapositional lobule cortex,0.5846623847461665
+subcallosal cortex,0.5449746095495058
+paracingulate gyrus,1.0992487580727743
+"cingulate gyrus, anterior division",1.285606606067492
+"cingulate gyrus, posterior division",0.441617217786396
+precuneous cortex,1.2032467126279807
+cuneal cortex,0.41649153194611205
+frontal oribtal cortex,0.9381617819739964
+"parahippocampal gyrus, anterior division",0.13960755789722526
+"parahippocampal gyrus, posterior division",0.11764961277088283
+lingual gyrus,0.4983317455799212
+"temporal fusiform cortex, anterior division",0.10537934506348921
+"temporal fusiform cortex, posterior division",0.49165019362345114
+temporal occipital fusiform cortex,0.45248696616152206
+occipital fusiform gyrus,0.3950495458306027
+frontal operculum cortex,0.3794587634605977
+central opercular cortex,1.372318180701062
+parietal operculum cortex,0.7815359739199723
+planum polare,0.6391018172324981
+heschls gyrus,0.5431259483620754
+planum temporale,0.9407646547208791
+supracalcarine cortex,0.05376113006600487
+occipital pole,0.6739167103186918
