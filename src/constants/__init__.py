@@ -1,8 +1,9 @@
 import os
 
 # ============================ PATH CONSTANTS ============================
-DATA_PATH = os.path.join(os.getcwd(), "datasets")
-REGISTRATION_FOLDER = os.path.join(os.getcwd(), "output_registration")
+WORK_PATH = "/scratch/users/ggaspar/CaPTk"
+DATA_PATH = os.path.join(WORK_PATH, "datasets")
+REGISTRATION_FOLDER = os.path.join(WORK_PATH, "output_registration")
 
 # ============================ NAME CONSTANTS ============================
 AFFINE_NAME = "affine.mat"

@@ -1,7 +1,11 @@
 import glob
 import os
-from common.io.brats_path_operation import create_registration_folder_for_brats_subject, extract_subject_id_from_brats_path
+from common.io.brats_path_operation import (
+    create_registration_folder_for_brats_subject,
+    extract_subject_id_from_brats_path,
+)
 from constants.dataset_constants.brats import BRATS_FOLDER_PATH
+
 
 def get_file_list_from_pattern(pattern: str):
     """
@@ -10,6 +14,7 @@ def get_file_list_from_pattern(pattern: str):
     path = glob.glob(pattern)
     path.sort()
     return path
+
 
 def extract_subject_id_from_file_path(path: str) -> tuple[str, str]:
     """
@@ -23,12 +28,17 @@ def extract_subject_id_from_file_path(path: str) -> tuple[str, str]:
     """
     if path.startswith(BRATS_FOLDER_PATH):
         return extract_subject_id_from_brats_path(path)
+    else:
+        raise ValueError("Path does not match any dataset.")
     # elif path.startswith(QIN_FOLDER_PATH):
     # return extract_subject_id_from_qin_path(path)
 
-def create_registration_folder_for_subject_file_path(path: str) -> tuple[str, str, str, str]:
+
+def create_registration_folder_for_subject_file_path(
+    path: str,
+) -> tuple[str, str, str, str]:
     """
-    Creates the registration folder for a subject. 
+    Creates the registration folder for a subject.
 
     Args:
         path (str): path to the file
@@ -38,9 +48,9 @@ def create_registration_folder_for_subject_file_path(path: str) -> tuple[str, st
     """
     subject_id, _ = extract_subject_id_from_file_path(path)
     if path.startswith(BRATS_FOLDER_PATH):
-       subject_folder = create_registration_folder_for_brats_subject(subject_id)
+        subject_folder = create_registration_folder_for_brats_subject(subject_id)
 
-    affine_folder = os.path.join(subject_folder, "affine")  
+    affine_folder = os.path.join(subject_folder, "affine")
     if not os.path.exists(affine_folder):
         os.makedirs(affine_folder)
 
