@@ -1,7 +1,7 @@
 import os
 
 # ============================ PATH CONSTANTS ============================
-WORK_PATH = "/scratch/users/ggaspar/CaPTk"
+WORK_PATH = "/"
 DATA_PATH = os.path.join(WORK_PATH, "datasets")
 REGISTRATION_FOLDER = os.path.join(WORK_PATH, "output_registration")
 

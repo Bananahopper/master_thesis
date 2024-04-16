@@ -1,7 +1,8 @@
 import subprocess
+import logging
 
 
-def run_commands(commands: list[str]):
+def run_commands(commands):
     """
     Run a list of commands.
 
@@ -9,4 +10,5 @@ def run_commands(commands: list[str]):
         commands (list[str]): list of commands
     """
     for command in commands:
-        subprocess.run(command, shell=True)
+        logging.info(f"Running command from command_operations: {command}")
+        subprocess.call(command, shell=True)

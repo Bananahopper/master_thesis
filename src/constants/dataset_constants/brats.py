@@ -1,5 +1,5 @@
 import os
-from constants import DATA_PATH, REGISTRATION_FOLDER
+from src.constants import DATA_PATH, REGISTRATION_FOLDER
 
 BRATS_NAME = "Brats2021_wTumor"
 

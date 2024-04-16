@@ -1,12 +1,13 @@
 import logging
 import os
-from common.io.command_operations import run_commands
-from common.io.path_operations import (
+from src.common.io.command_operations import run_commands
+from src.common.io.path_operations import (
     create_registration_folder_for_subject_file_path,
     extract_subject_id_from_file_path,
     get_file_list_from_pattern,
 )
-from constants import AFFINE_NAME, INVERSE_WARP_NAME, WARP_NAME
+from src.constants import AFFINE_NAME, INVERSE_WARP_NAME, WARP_NAME
+from typing import List
 
 
 class Registrator:
@@ -23,17 +24,17 @@ class Registrator:
         target_atlas: str,
         target_cortical_atlas: str,
         target_subcortical_atlas: str,
-        max_iterations: list[int] = [100, 50, 10],
+        max_iterations: List[int] = [100, 50, 10],
         metric: str = "MI",
-        patch_radius: list[int] = [2, 2, 2],
+        patch_radius: List[int] = [2, 2, 2],
         ia_image_centers: bool = True,
     ):
 
-        logging.basicConfig(
-            filename="registration.log",
-            level=logging.INFO,
-            format="%(asctime)s - %(levelname)s - %(message)s",
-        )
+        # logging.basicConfig(
+        #     filename="registration.log",
+        #     level=logging.INFO,
+        #     format="%(asctime)s - %(levelname)s - %(message)s",
+        # )
 
         if metric not in self.allowed_metrics:
             raise ValueError(
@@ -183,7 +184,7 @@ class Registrator:
         Creates the command for the greedy algorithm.
 
         Args:
-            source_file (str): file to be registered
+            source_file (str): file to beq registered
             target_file (str): target file
             transformation_file_path (str): path to the transformation file
 
@@ -191,23 +192,14 @@ class Registrator:
             str: affine command
         """
         command_affine = (
-            "greedy -d 3 -a -i "
+            "/work/CaPTk/bin/install/appdir/usr/bin/greedy -d 3 -a -i "
             + target_file
             + " "
             + source_file
             + " -o "
             + affine_file_path
         )
-        command_affine += (
-            " -m "
-            + self.metric
-            + " "
-            + str(self.patch_radius[0])
-            + "x"
-            + str(self.patch_radius[1])
-            + "x"
-            + str(self.patch_radius[2])
-        )
+        command_affine += " -m " + self.metric
         command_affine += (
             " -n "
             + str(self.max_iterations[0])
@@ -257,7 +249,7 @@ class Registrator:
             + source_file
             + " "
             + output_affine_subject_file_path
-            + " -ri LABEL 0.2 vox"
+            + " -ri LABEL 0.2vox"
             + " -rm "
             + label_file
             + " "
@@ -356,7 +348,7 @@ class Registrator:
             + source_file
             + " "
             + output_subject_file_path
-            + " -ri LABEL 0.2 vox"
+            + " -ri LABEL 0.2vox"
             + " -rm "
             + label_file
             + " "
@@ -457,7 +449,7 @@ class Registrator:
             "/work/CaPTk/bin/install/appdir/usr/bin/greedy -d 3"
             + " -rf "
             + source_file
-            + " -ri LABEL 0.2 vox"
+            + " -ri LABEL 0.2vox"
             + " -rm "
             + target_cortical_file
             + " "
@@ -472,7 +464,7 @@ class Registrator:
             "/work/CaPTk/bin/install/appdir/usr/bin/greedy -d 3"
             + " -rf "
             + source_file
-            + " -ri LABEL 0.2 vox"
+            + " -ri LABEL 0.2vox"
             + " -rm "
             + target_subcortical_file
             + " "

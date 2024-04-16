@@ -1,10 +1,10 @@
 import glob
 import os
-from common.io.brats_path_operation import (
+from src.common.io.brats_path_operation import (
     create_registration_folder_for_brats_subject,
     extract_subject_id_from_brats_path,
 )
-from constants.dataset_constants.brats import BRATS_FOLDER_PATH
+from src.constants.dataset_constants.brats import BRATS_FOLDER_PATH
 
 
 def get_file_list_from_pattern(pattern: str):
@@ -16,7 +16,7 @@ def get_file_list_from_pattern(pattern: str):
     return path
 
 
-def extract_subject_id_from_file_path(path: str) -> tuple[str, str]:
+def extract_subject_id_from_file_path(path: str):
     """
     Extracts the subject id from the path.
 
@@ -36,7 +36,7 @@ def extract_subject_id_from_file_path(path: str) -> tuple[str, str]:
 
 def create_registration_folder_for_subject_file_path(
     path: str,
-) -> tuple[str, str, str, str]:
+):
     """
     Creates the registration folder for a subject.
 

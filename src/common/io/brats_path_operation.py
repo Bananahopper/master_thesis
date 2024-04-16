@@ -1,7 +1,8 @@
 import os
-from constants.dataset_constants.brats import BRATS_REGISTRATION_FOLDER 
+from src.constants.dataset_constants.brats import BRATS_REGISTRATION_FOLDER
 
-def extract_subject_id_from_brats_path(path: str) -> tuple[str, str]:
+
+def extract_subject_id_from_brats_path(path: str):
     """
     Extracts the subject id from the path.
 
@@ -14,9 +15,10 @@ def extract_subject_id_from_brats_path(path: str) -> tuple[str, str]:
     path_parts = path.split(os.sep)
     return path_parts[-2], path_parts[-1]
 
+
 def create_registration_folder_for_brats_subject(subject_id: str) -> str:
     """
-    Creates the registration folder for a BRATS subject. 
+    Creates the registration folder for a BRATS subject.
 
     Args:
         subject_id (str): subject id
