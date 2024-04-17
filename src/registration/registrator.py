@@ -15,7 +15,7 @@ class Registrator:
     This class is used to register T1 images, and their tumor masks, to a normalized space atlas.
     """
 
-    allowed_metrics = ["MI", "WNCC"]
+    allowed_metrics = ["MI"]
     # allowed patch radius for arbitrary dimension
     allowed_patch_radius = [2]
 

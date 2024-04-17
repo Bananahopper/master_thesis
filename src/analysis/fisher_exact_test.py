@@ -3,8 +3,16 @@ import numpy as np
 import nibabel as nib
 from scipy.stats import fisher_exact
 
+
 class FisherExactTest:
-    def __init__(self, dataset1_path: str, dataset2_path: str, size1: int, size2: int, num_processes: int = mp.cpu_count()):
+    def __init__(
+        self,
+        dataset1_path: str,
+        dataset2_path: str,
+        size1: int,
+        size2: int,
+        num_processes: int = mp.cpu_count(),
+    ):
         self.dataset1_path = dataset1_path
         self.dataset2_path = dataset2_path
         self.size1 = size1
@@ -52,5 +60,3 @@ class FisherExactTest:
         # Save the result
         img = nib.Nifti1Image(p, affine=file_ds1.affine)
         nib.save(img, save_path)
-
-

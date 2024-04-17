@@ -2,25 +2,25 @@ import glob
 import numpy as np
 import nibabel as nib
 import matplotlib.pyplot as plt
-import logging
 import os
 import logging
-import argparse
+from analysis import ANALYSIS_FOLDER
+
 
 class ProbDist:
-    def __init__(self,
-                dataset_path : str,
-                dataset_name : str,
-                atlas_path : str, 
-                save_path: str,
-                labels: bool,
-                array_size: list,
-                necrotic_core = None,
-                enhancing_region =None,
-                edema = None):
-        
+    def __init__(
+        self,
+        dataset_path: str,
+        dataset_name: str,
+        atlas_path: str,
+        labels: bool,
+        array_size: list,
+        necrotic_core=None,
+        enhancing_region=None,
+        edema=None,
+    ):
+
         self.dataset_path = dataset_path
-        self.save_path = save_path
         self.dataset_name = dataset_name
         self.atlas_path = atlas_path
         self.necrotic_core = necrotic_core
@@ -28,6 +28,10 @@ class ProbDist:
         self.edema = edema
         self.labels = labels
         self.array_size = array_size
+
+        self.SAVE_PATH = os.path.join(ANALYSIS_FOLDER, "prob_dist")
+        if not os.path.exists(self.SAVE_PATH):
+            os.makedirs(self.SAVE_PATH)
 
     def process_data(self):
         # Get all the nifti files
@@ -46,17 +50,25 @@ class ProbDist:
         file_map = sample_img.file_map
 
         # Initialize result arrays
-        result_array_whole_tumor = np.zeros((self.array_size[0], self.array_size[1], self.array_size[2]))
-        result_array_necrotic_core = np.zeros((self.array_size[0], self.array_size[1], self.array_size[2]))
-        result_array_enhancing_region = np.zeros((self.array_size[0], self.array_size[1], self.array_size[2]))
-        result_array_edema = np.zeros((self.array_size[0], self.array_size[1], self.array_size[2]))
+        result_array_whole_tumor = np.zeros(
+            (self.array_size[0], self.array_size[1], self.array_size[2])
+        )
+        result_array_necrotic_core = np.zeros(
+            (self.array_size[0], self.array_size[1], self.array_size[2])
+        )
+        result_array_enhancing_region = np.zeros(
+            (self.array_size[0], self.array_size[1], self.array_size[2])
+        )
+        result_array_edema = np.zeros(
+            (self.array_size[0], self.array_size[1], self.array_size[2])
+        )
 
         if self.labels == True:
             # Whole tumor
             for file in files:
                 img = nib.load(file)
                 data = img.get_fdata()
-                #get binary mask
+                # get binary mask
                 data[data > 0] = 1
 
                 result_array_whole_tumor += data
@@ -76,7 +88,7 @@ class ProbDist:
                 img = nib.load(file)
                 data = img.get_fdata()
                 # Get enhancing region
-                data = data == self.enhancing_region 
+                data = data == self.enhancing_region
                 data[data > 0] = 1
 
                 result_array_enhancing_region += data
@@ -95,7 +107,7 @@ class ProbDist:
             for file in files:
                 img = nib.load(file)
                 data = img.get_fdata()
-                #get binary mask
+                # get binary mask
                 data[data > 0] = 1
 
                 result_array_whole_tumor += data
@@ -106,45 +118,68 @@ class ProbDist:
         print(max(result_array_edema.flatten()))
 
         if self.labels == True:
-            self.save_result_as_nifti(result_array_whole_tumor, 'whole_tumor', affine, header, extra, file_map)
-            self.save_result_as_nifti(result_array_necrotic_core, 'necrotic_core', affine, header, extra, file_map)
-            self.save_result_as_nifti(result_array_enhancing_region, 'enhancing_region', affine, header, extra, file_map)
-            self.save_result_as_nifti(result_array_edema, 'edema', affine, header, extra, file_map)
+            self.save_result_as_nifti(
+                result_array_whole_tumor, "whole_tumor", affine, header, extra, file_map
+            )
+            self.save_result_as_nifti(
+                result_array_necrotic_core,
+                "necrotic_core",
+                affine,
+                header,
+                extra,
+                file_map,
+            )
+            self.save_result_as_nifti(
+                result_array_enhancing_region,
+                "enhancing_region",
+                affine,
+                header,
+                extra,
+                file_map,
+            )
+            self.save_result_as_nifti(
+                result_array_edema, "edema", affine, header, extra, file_map
+            )
         else:
-            self.save_result_as_nifti(result_array_whole_tumor, 'whole_tumor', affine, header, extra, file_map)
+            self.save_result_as_nifti(
+                result_array_whole_tumor, "whole_tumor", affine, header, extra, file_map
+            )
 
         if self.labels == True:
-            self.visualize_surface_plot(result_array_whole_tumor, 'whole_tumor', self.dataset_name)
-            self.visualize_surface_plot(result_array_necrotic_core, 'necrotic_core', self.dataset_name)
-            self.visualize_surface_plot(result_array_enhancing_region, 'enhancing_region', self.dataset_name)
-            self.visualize_surface_plot(result_array_edema, 'edema', self.dataset_name)
+            self.visualize_surface_plot(
+                result_array_whole_tumor, "whole_tumor", self.dataset_name
+            )
+            self.visualize_surface_plot(
+                result_array_necrotic_core, "necrotic_core", self.dataset_name
+            )
+            self.visualize_surface_plot(
+                result_array_enhancing_region, "enhancing_region", self.dataset_name
+            )
+            self.visualize_surface_plot(result_array_edema, "edema", self.dataset_name)
         else:
-            self.visualize_surface_plot(result_array_whole_tumor, 'whole_tumor')
-
+            self.visualize_surface_plot(result_array_whole_tumor, "whole_tumor")
 
     def save_result_as_nifti(self, result_array, name, affine, header, extra, file_map):
         img = nib.Nifti1Image(result_array, affine, header, extra, file_map)
-        nib.save(img, f'{self.save_path}/probdist_{self.dataset_name}_{name}.nii')
+        nib.save(img, f"{self.SAVE_PATH}/probdist_{self.dataset_name}_{name}.nii")
 
     def visualize_surface_plot(self, result_array, name, dataset_name):
         collapsed_array = np.sum(result_array, axis=2)
         collapsed_array_sum = sum(collapsed_array.flatten())
         collapsed_array_plot = collapsed_array / collapsed_array_sum
-        collapsed_array_plot = collapsed_array_plot 
+        collapsed_array_plot = collapsed_array_plot
 
         x = np.arange(0, collapsed_array.shape[1])
         y = np.arange(0, collapsed_array.shape[0])
         X, Y = np.meshgrid(x, y)
 
         fig = plt.figure()
-        ax = fig.add_subplot(111, projection='3d')
-        ax.plot_surface(X, Y, collapsed_array, cmap='viridis')
+        ax = fig.add_subplot(111, projection="3d")
+        ax.plot_surface(X, Y, collapsed_array, cmap="viridis")
 
         ax.set_title(f"Collapsed Array Surface Plot - {name}")
         ax.set_xlabel("X-axis")
         ax.set_ylabel("Y-axis")
         ax.set_zlabel("Values (10^3)")
 
-        plt.savefig(f"{self.save_path}/{dataset_name}_surface_plot_{name}.png")
-
-
+        plt.savefig(f"{self.SAVE_PATH}/{dataset_name}_surface_plot_{name}.png")
