@@ -3,16 +3,13 @@ import argparse
 import logging
 
 
-def main(dir, name, mode):
-    tpr = PerRegionDist(dir, name, mode)
+def main(name, mode):
+    tpr = PerRegionDist(name, mode)
     tpr.process()
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Calculate tumor per region")
-    parser.add_argument(
-        "--dir", type=str, required=True, help="Directory containing the data"
-    )
     parser.add_argument(
         "--name", type=str, required=True, help="Name of the dataset for saving"
     )
@@ -31,4 +28,4 @@ if __name__ == "__main__":
         format="%(asctime)s - %(levelname)s - %(message)s",
     )
 
-    main(args.dir, args.name, args.mode)
+    main(args.name, args.mode)

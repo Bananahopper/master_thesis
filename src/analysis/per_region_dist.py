@@ -4,19 +4,18 @@ import numpy as np
 import pandas as pd
 import os
 import glob
-import argparse
 import tqdm
 from multiprocessing import Pool
 import logging
 import re
 from analysis import ANALYSIS_FOLDER
+from constants import REGISTRATION_FOLDER_CAPTK
 from constants.analysis__constants.cort_sub_labels import CORT_LABELS, SUB_LABELS
 
 
 class PerRegionDist:
-    def __init__(self, dir: str, name: str, mode: int):
+    def __init__(self, name: str, mode: int):
 
-        self.dir = dir
         self.name = name
         self.mode = mode
 
@@ -27,7 +26,7 @@ class PerRegionDist:
     def process(self):
         print("Processing data")
         # Get the data
-        basedir = os.listdir(self.dir)
+        basedir = os.listdir(REGISTRATION_FOLDER_CAPTK)
 
         # Create a pool of worker processes
         pool = Pool()
@@ -45,7 +44,7 @@ class PerRegionDist:
         pool.join()
 
     def process_subdir(self, subdir):
-        subdir_path = os.path.join(self.dir, subdir)
+        subdir_path = os.path.join(REGISTRATION_FOLDER_CAPTK, subdir)
 
         # Extract patient number from the subdirectory name
         pattern = r"/(?P<number>\d+)"

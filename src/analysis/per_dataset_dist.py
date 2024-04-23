@@ -8,6 +8,7 @@ import random
 import matplotlib.pyplot as plt
 
 from analysis import ANALYSIS_FOLDER
+from constants import REGISTRATION_FOLDER_CAPTK
 
 # Configure logging
 logging.basicConfig(
@@ -18,8 +19,8 @@ logging.basicConfig(
 
 
 class PerDatasetDist:
-    def __init__(self, directory, name):
-        self.directory = directory
+    def __init__(self, name):
+
         self.name = name
 
         self.SAVE_PATH = os.path.join(ANALYSIS_FOLDER, "per_dataset_dist")
@@ -42,7 +43,7 @@ class PerDatasetDist:
         added_dfs_cortical = []
         added_dfs_subcortical = []
 
-        for root, dir, files in os.walk(self.directory):
+        for root, dir, files in os.walk(REGISTRATION_FOLDER_CAPTK):
             for subdir in dir:
 
                 logging.info(f"Processing {subdir}")

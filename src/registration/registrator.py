@@ -82,7 +82,12 @@ class Registrator:
         label_list = get_file_list_from_pattern(label)
 
         if len(file_list) != len(label_list):
-            raise ValueError("The number of files and labels must be the same")
+            logging.error(
+                f"The number of files and labels must be the same. Images: {len(file_list)}, Labels: {len(label_list)}"
+            )
+            raise ValueError(
+                f"The number of files and labels must be the same. Images: {len(file_list)}, Labels: {len(label_list)}"
+            )
 
         for idx, (file, label) in enumerate(zip(file_list, label_list)):
             logging.info(str(idx) + "/" + str(len(file_list)))

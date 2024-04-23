@@ -1,5 +1,8 @@
 import glob
 import os
+from src.common.io.qin_path_operations import create_registration_folder_for_qin_subject
+from src.common.io.qin_path_operations import extract_subject_id_from_qin_path
+from src.constants.dataset_constants.qin import QIN_FOLDER_PATH
 from src.common.io.brats_path_operation import (
     create_registration_folder_for_brats_subject,
     extract_subject_id_from_brats_path,
@@ -28,10 +31,8 @@ def extract_subject_id_from_file_path(path: str):
     """
     if path.startswith(BRATS_FOLDER_PATH):
         return extract_subject_id_from_brats_path(path)
-    else:
-        raise ValueError("Path does not match any dataset.")
-    # elif path.startswith(QIN_FOLDER_PATH):
-    # return extract_subject_id_from_qin_path(path)
+    elif path.startswith(QIN_FOLDER_PATH):
+        return extract_subject_id_from_qin_path(path)
 
 
 def create_registration_folder_for_subject_file_path(
@@ -49,6 +50,8 @@ def create_registration_folder_for_subject_file_path(
     subject_id, _ = extract_subject_id_from_file_path(path)
     if path.startswith(BRATS_FOLDER_PATH):
         subject_folder = create_registration_folder_for_brats_subject(subject_id)
+    elif path.startswith(QIN_FOLDER_PATH):
+        subject_folder = create_registration_folder_for_qin_subject(subject_id)
 
     affine_folder = os.path.join(subject_folder, "affine")
     if not os.path.exists(affine_folder):
@@ -63,3 +66,35 @@ def create_registration_folder_for_subject_file_path(
         os.makedirs(inverse_warp_folder)
 
     return subject_folder, affine_folder, warp_folder, inverse_warp_folder
+
+
+def extract_srf_from_prob_dist_path(path: str):
+    """
+    Extracts the subject id from the path.
+
+    Returns:
+        tuple[str, str, str]: patient id, registration modality, and file name
+    """
+    path_split = path.split(os.sep)
+    dataset_name = path_split[-4]
+    subject_id = path_split[-3]
+    registration_modality = path_split[-2]
+    file_name = path_split[-1]
+
+    return dataset_name, subject_id, registration_modality, file_name
+
+
+def extract_save_dir_from_path(path: str):
+    """
+    Extracts the save directory from the path.
+
+    Args:
+        path (str): path to the file
+
+    Returns:
+        str: save directory
+    """
+    path_split = path.split(os.sep)
+    save_dir = os.path.join(*path_split[:-1])
+
+    return save_dir

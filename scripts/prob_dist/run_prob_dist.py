@@ -1,47 +1,38 @@
+import os
+from constants import WORK_PATH_CAPTK
 from src.analysis.prob_dist import ProbDist
 import argparse
 import logging
 
 
 def main(
-    dataset_path,
+    pattern,
     dataset_name,
-    atlas_path,
     labels,
-    array_size,
     necrotic_core,
     enhancing_region,
     edema,
 ):
     prob = ProbDist(
-        dataset_path,
         dataset_name,
-        atlas_path,
         labels,
-        array_size,
         necrotic_core,
         enhancing_region,
         edema,
     )
-    prob.process_data()
+    prob.run(pattern)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Calculate probability distribution")
     parser.add_argument(
-        "--dataset_path", type=str, required=True, help="Path to the dataset"
+        "--pattern", type=str, required=True, help="Pattern for the files"
     )
     parser.add_argument(
         "--dataset_name", type=str, required=True, help="Name of the dataset"
     )
     parser.add_argument(
-        "--atlas_path", type=str, required=True, help="Path to the atlas"
-    )
-    parser.add_argument(
         "--labels", type=bool, required=True, help="Whether to use labels"
-    )
-    parser.add_argument(
-        "--array_size", type=list, required=True, help="Size of the array"
     )
     parser.add_argument(
         "--necrotic_core",
@@ -60,19 +51,20 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
+    if not os.path.exists(WORK_PATH_CAPTK, "logs/"):
+        os.makedirs(WORK_PATH_CAPTK, "logs")
+
     # Configure logging
     logging.basicConfig(
-        filename="prob_dist.log",
+        filename="logs/prob_dist.log",
         level=logging.INFO,
         format="%(asctime)s - %(levelname)s - %(message)s",
     )
 
     main(
-        args.dataset_path,
+        args.pattern,
         args.dataset_name,
-        args.atlas_path,
         args.labels,
-        args.array_size,
         args.necrotic_core,
         args.enhancing_region,
         args.edema,
