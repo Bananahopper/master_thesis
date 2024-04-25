@@ -243,9 +243,9 @@ class ProbDist:
         ax.plot_surface(X, Y, collapsed_array, cmap="viridis")
 
         ax.set_title(f"Collapsed Array Surface Plot - {name}")
-        ax.set_xlabel("X-axis")
-        ax.set_ylabel("Y-axis")
-        ax.set_zlabel("Values (10^3)")
+        ax.set_xlabel("Left View")
+        ax.set_ylabel("Posterior View")
+        ax.set_zlabel("Values")
 
         if not os.path.exists(f"{self.SAVE_PATH}/{registration_modality}"):
             os.makedirs(f"{self.SAVE_PATH}/{registration_modality}")
