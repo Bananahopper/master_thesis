@@ -15,7 +15,6 @@ singularity exec  --no-home \
                   --bind datasets/:/datasets \
                   --bind output_registration/:/output_registration \
                   --bind src/:/src \
-                  --bind script/:/script \
                   --bind scripts:/scripts \
                   --bind atlases/:/atlases \
                   captk_latest.sif \

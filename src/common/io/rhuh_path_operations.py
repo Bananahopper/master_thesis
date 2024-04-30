@@ -1,9 +1,8 @@
 import os
+from src.constants.dataset_constants.rhuh import RHUH_REGISTRATION_FOLDER
 
-from src.constants.dataset_constants.qin import QIN_REGISTRATION_FOLDER
 
-
-def extract_subject_id_from_qin_path(path: str):
+def extract_subject_id_from_rhuh_path(path: str):
     """
     Extracts the subject id from the path.
 
@@ -14,12 +13,12 @@ def extract_subject_id_from_qin_path(path: str):
         tuple[str, str]: subject id and file name
     """
     path_parts = path.split(os.sep)
-    return path_parts[-4], path_parts[-1]
+    return path_parts[-3], path_parts[-1]
 
 
-def create_registration_folder_for_qin_subject(subject_id: str):
+def create_registration_folder_for_rhuh_subject(subject_id: str):
     """
-    Creates the registration folder for a QIN subject.
+    Creates the registration folder for a RHUH subject.
 
     Args:
         subject_id (str): subject id
@@ -28,7 +27,7 @@ def create_registration_folder_for_qin_subject(subject_id: str):
         str: path to the registration folder
     """
 
-    subject_folder = os.path.join(QIN_REGISTRATION_FOLDER, subject_id)
+    subject_folder = os.path.join(RHUH_REGISTRATION_FOLDER, subject_id)
 
     if not os.path.exists(subject_folder):
         os.makedirs(subject_folder)

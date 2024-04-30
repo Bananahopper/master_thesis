@@ -35,7 +35,24 @@ class TumorSegmentor:
             or len(t1_path_list) != len(flair_path_list)
         ):
             logging.error("Number of T1, T1ce, T2 and FLAIR images do not match.")
-            return
+            logging.error(
+                f"Number of T1 images: {len(t1_path_list)}, Number of T1ce images: {len(t1ce_path_list)}, Number of T2 images: {len(t2_path_list)}, Number of FLAIR images: {len(flair_path_list)}"
+            )
+
+        for i, t1_item in enumerate(t1_path_list):
+            t1_item = t1_item.split(os.sep)
+            t1ce_item = t1ce_path_list[i].split(os.sep)
+            t2_item = t2_path_list[i].split(os.sep)
+            flair_item = flair_path_list[i].split(os.sep)
+
+            if (
+                t1_item[3] != t1ce_item[3]
+                or t1_item[3] != t2_item[3]
+                or t1_item[3] != flair_item[3]
+            ):
+                logging.error(
+                    f"File names do not match for T1: {t1_item[3]}, T1ce: {t1ce_item[3]}, T2: {t2_item[3]}, FLAIR: {flair_item[3]}"
+                )
 
         commands = []
 
@@ -83,13 +100,15 @@ class TumorSegmentor:
         """
 
         save_directory = extract_save_dir_from_path(t1_path)
-
+        subject_id = t1_path.split(os.sep)[3]
         output_folder = os.path.join(save_directory, "tumor_segmentation_outputs")
 
         if not os.path.exists(output_folder):
             os.makedirs(output_folder)
 
-        logging.info("Output folder:" + output_folder)
+        output_file = f"{output_folder}/output_folder_{subject_id}.nii.gz"
+
+        logging.info("Output folder:" + output_file)
 
         command = (
             "/work/CaPTk/bin/install/appdir/usr/bin/DeepMedic"
@@ -104,7 +123,7 @@ class TumorSegmentor:
             + ","
             + flair_path
             + " -o "
-            + output_folder
+            + output_file
         )
 
         return command

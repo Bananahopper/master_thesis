@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH -J CaPTk_Brain_Extraction
+#SBATCH -J CaPTk_registration_multiple_images
 #SBATCH -N 1
 #SBATCH -n 1
 #SBATCH -c 128
@@ -18,4 +18,4 @@ singularity exec  --no-home \
                   --bind scripts:/scripts \
                   --bind atlases/:/atlases \
                   captk_latest.sif \
-                  bash scripts/segmentation/intermediary_brain_extraction.sh "$1"
+                  bash scripts/registration/intermediate_registration_multiple_images.sh "$1" "$2" "$3" "$4" "$5"
