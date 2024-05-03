@@ -13,7 +13,7 @@ def extract_subject_id_from_rhuh_path(path: str):
         tuple[str, str]: subject id and file name
     """
     path_parts = path.split(os.sep)
-    return path_parts[-3], path_parts[-1]
+    return path_parts[-3], path_parts[-1], path_parts[-4]
 
 
 def create_registration_folder_for_rhuh_subject(subject_id: str):

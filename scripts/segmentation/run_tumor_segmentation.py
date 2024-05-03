@@ -1,5 +1,6 @@
 import logging
 import argparse
+import os
 from src.segmentation.tumor_segmentation import TumorSegmentor
 
 
@@ -26,12 +27,14 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    # # Configure logging
-    # logging.basicConfig(
-    #     filename="tumor_segmentation.log",
-    #     level=logging.INFO,
-    #     format="%(asctime)s - %(levelname)s - %(message)s",
-    # )
+    if os.path.exists("output_registration/tumor_segmentation.log"):
+        os.remove("output_registration/tumor_segmentation.log")
+
+    logging.basicConfig(
+        filename="output_registration/tumor_segmentation.log",
+        format="%(asctime)s - %(levelname)s - %(message)s",
+        level=logging.INFO,
+    )
 
     main(
         args.t1_pattern,

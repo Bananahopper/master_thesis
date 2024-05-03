@@ -101,29 +101,26 @@ class TumorSegmentor:
 
         save_directory = extract_save_dir_from_path(t1_path)
         subject_id = t1_path.split(os.sep)[3]
-        output_folder = os.path.join(save_directory, "tumor_segmentation_outputs")
-
+        output_folder = os.path.join(save_directory, "brats_pipeline_outputs")
         if not os.path.exists(output_folder):
             os.makedirs(output_folder)
 
-        output_file = f"{output_folder}/output_folder_{subject_id}.nii.gz"
+        output_patient_folder = os.path.join(output_folder, subject_id)
 
-        logging.info("Output folder:" + output_file)
+        logging.info("Output folder:" + output_patient_folder)
 
         command = (
-            "/work/CaPTk/bin/install/appdir/usr/bin/DeepMedic"
-            + " -md "
-            + "/work/CaPTk/bin/install/appdir/usr/data/deepMedic/saved_models/brainTumorSegmentation"
-            + " -i "
+            "/work/CaPTk/bin/install/appdir/usr/bin/BraTSPipeline"
+            + " -t1 "
             + t1_path
-            + ","
+            + " -t1c "
             + t1ce_path
-            + ","
+            + " -t2 "
             + t2_path
-            + ","
+            + " -fl "
             + flair_path
             + " -o "
-            + output_file
+            + output_patient_folder
         )
 
         return command

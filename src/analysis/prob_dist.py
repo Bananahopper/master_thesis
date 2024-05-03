@@ -4,7 +4,7 @@ import nibabel as nib
 import matplotlib.pyplot as plt
 import os
 import logging
-from analysis import ANALYSIS_FOLDER
+from analysis import ANALYSIS_FOLDER, ANALYSIS_FOLDER_CAPTK
 from common.io.path_operations import (
     extract_srf_from_prob_dist_path,
     get_file_list_from_pattern,
@@ -27,7 +27,9 @@ class ProbDist:
         self.enhancing_region = enhancing_region
         self.edema = edema
         self.labels = labels
-        self.SAVE_PATH = os.path.join(ANALYSIS_FOLDER, f"{dataset_name}/prob_dist")
+        self.SAVE_PATH = os.path.join(
+            ANALYSIS_FOLDER_CAPTK, f"{dataset_name}/prob_dist"
+        )
 
         if not os.path.exists(self.SAVE_PATH):
             os.makedirs(self.SAVE_PATH)

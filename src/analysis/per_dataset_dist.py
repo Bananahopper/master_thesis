@@ -7,7 +7,7 @@ from functools import reduce
 import random
 import matplotlib.pyplot as plt
 
-from analysis import ANALYSIS_FOLDER
+from analysis import ANALYSIS_FOLDER, ANALYSIS_FOLDER_CAPTK
 from constants import REGISTRATION_FOLDER_CAPTK
 
 # Configure logging
@@ -23,7 +23,7 @@ class PerDatasetDist:
 
         self.name = name
 
-        self.SAVE_PATH = os.path.join(ANALYSIS_FOLDER, "per_dataset_dist")
+        self.SAVE_PATH = os.path.join(ANALYSIS_FOLDER_CAPTK, "per_dataset_dist")
         if not os.path.exists(self.SAVE_PATH):
             os.makedirs(self.SAVE_PATH)
 

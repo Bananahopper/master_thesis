@@ -10,10 +10,10 @@ def extract_subject_id_from_brats_path(path: str):
         path (str): path to the file
 
     Returns:
-        tuple[str, str]: subject id and file name
+        tuple[str, str]: subject id, file name, and dataset name
     """
     path_parts = path.split(os.sep)
-    return path_parts[-2], path_parts[-1]
+    return path_parts[-2], path_parts[-1], path_parts[-3]
 
 
 def create_registration_folder_for_brats_subject(subject_id: str) -> str:

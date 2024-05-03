@@ -30,12 +30,6 @@ class Registrator:
         ia_image_centers: bool = True,
     ):
 
-        # logging.basicConfig(
-        #     filename="registration.log",
-        #     level=logging.INFO,
-        #     format="%(asctime)s - %(levelname)s - %(message)s",
-        # )
-
         if metric not in self.allowed_metrics:
             raise ValueError(
                 "The metric must be one of the following: " + str(self.allowed_metrics)
@@ -106,7 +100,7 @@ class Registrator:
             create_registration_folder_for_subject_file_path(file)
         )
 
-        output_subject_id, _ = extract_subject_id_from_file_path(file)
+        output_subject_id, _, _ = extract_subject_id_from_file_path(file)
         output_affine_subject_file_path = os.path.join(
             affine_folder, output_subject_id + "_aff_reg_t1.nii.gz"
         )

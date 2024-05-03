@@ -1,5 +1,6 @@
 import logging
 import argparse
+import os
 from src.segmentation.brain_segmentation import BrainExtractor
 
 
@@ -19,12 +20,14 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    # # Configure logging
-    # logging.basicConfig(
-    #     filename="brain_extraction.log",
-    #     level=logging.INFO,
-    #     format="%(asctime)s - %(levelname)s - %(message)s",
-    # )
+    if os.path.exists("output_registration/brain_extraction.log"):
+        os.remove("output_registration/brain_extraction.log")
+
+    logging.basicConfig(
+        filename="output_registration/brain_extraction.log",
+        format="%(asctime)s - %(levelname)s - %(message)s",
+        level=logging.INFO,
+    )
 
     main(
         args.pattern,

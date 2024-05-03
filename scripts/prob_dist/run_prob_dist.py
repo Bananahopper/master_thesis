@@ -51,15 +51,15 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    if not os.path.exists(WORK_PATH_CAPTK, "logs/"):
-        os.makedirs(WORK_PATH_CAPTK, "logs")
+    # if not os.path.exists(WORK_PATH_CAPTK, "logs/"):
+    #     os.makedirs(WORK_PATH_CAPTK, "logs")
 
-    # Configure logging
-    logging.basicConfig(
-        filename="logs/prob_dist.log",
-        level=logging.INFO,
-        format="%(asctime)s - %(levelname)s - %(message)s",
-    )
+    # # Configure logging
+    # logging.basicConfig(
+    #     filename="/scratch/users/ggaspar/CaPTk/logs/prob_dist.log",
+    #     level=logging.INFO,
+    #     format="%(asctime)s - %(levelname)s - %(message)s",
+    # )
 
     main(
         args.pattern,

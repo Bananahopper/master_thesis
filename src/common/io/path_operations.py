@@ -1,6 +1,7 @@
 import glob
 import os
 from src.constants.dataset_constants.burdenko import (
+    BURDENKO_CAPTK_FOLDER_PATH,
     BURDENKO_FOLDER_PATH,
     BURDENKO_REGISTRATION_FOLDER,
 )
@@ -12,13 +13,17 @@ from src.common.io.rhuh_path_operations import (
 from src.common.io.bids_path_operations import (
     extract_subject_id_from_bids_path,
     create_registration_folder_for_bids_subject,
+    extract_subject_id_from_bids_path_exception,
 )
 from src.constants.dataset_constants.qin import QIN_FOLDER_PATH, QIN_REGISTRATION_FOLDER
 from src.common.io.brats_path_operation import (
     create_registration_folder_for_brats_subject,
     extract_subject_id_from_brats_path,
 )
-from src.constants.dataset_constants.brats import BRATS_FOLDER_PATH
+from src.constants.dataset_constants.brats import (
+    BRATS_CAPTK_FOLDER_PATH,
+    BRATS_FOLDER_PATH,
+)
 
 
 def get_file_list_from_pattern(pattern: str):
@@ -40,14 +45,16 @@ def extract_subject_id_from_file_path(path: str):
     Returns:
         tuple[str, str]: subject id and file name
     """
-    if path.startswith(BRATS_FOLDER_PATH):
+    if path.startswith(BRATS_FOLDER_PATH) or path.startswith(BRATS_CAPTK_FOLDER_PATH):
         return extract_subject_id_from_brats_path(path)
     elif path.startswith(QIN_FOLDER_PATH):
         return extract_subject_id_from_bids_path(path)
     elif path.startswith(RHUH_FOLDER_PATH):
         return extract_subject_id_from_rhuh_path(path)
-    elif path.startswith(BURDENKO_FOLDER_PATH):
-        return extract_subject_id_from_bids_path(path)
+    elif path.startswith(BURDENKO_FOLDER_PATH) or path.startswith(
+        BURDENKO_CAPTK_FOLDER_PATH
+    ):
+        return extract_subject_id_from_bids_path_exception(path)
 
 
 def create_registration_folder_for_subject_file_path(
@@ -62,7 +69,7 @@ def create_registration_folder_for_subject_file_path(
     Returns:
         tuple[str, str, str, str]: path to the subject folder, affine folder, warp folder, and inverse warp folder
     """
-    subject_id, _ = extract_subject_id_from_file_path(path)
+    subject_id, _, _ = extract_subject_id_from_file_path(path)
     if path.startswith(BRATS_FOLDER_PATH):
         subject_folder = create_registration_folder_for_brats_subject(subject_id)
     elif path.startswith(QIN_FOLDER_PATH):
@@ -169,7 +176,7 @@ def extract_save_dir_from_path(path: str):
         str: save directory
     """
     path_split = path.split(os.sep)
-    save_dir = os.path.join(*path_split[:-1])
+    save_dir = os.path.join(*path_split[:-4])
 
     return save_dir
 

@@ -53,11 +53,11 @@ if __name__ == "__main__":
     if os.path.exists("output_registration/registration.log"):
         os.remove("output_registration/registration.log")
 
-    # logging.basicConfig(
-    #     filename="output_registration/registration.log",
-    #     encoding="utf-8",
-    #     level=logging.INFO,
-    # )
+    logging.basicConfig(
+        filename="output_registration/registration.log",
+        format="%(asctime)s - %(levelname)s - %(message)s",
+        level=logging.INFO,
+    )
 
     main(
         args.principal_atlas_path,

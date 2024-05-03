@@ -10,10 +10,10 @@ def extract_subject_id_from_bids_path(path: str):
         path (str): path to the file
 
     Returns:
-        tuple[str, str]: subject id and file name
+        tuple[str, str]: subject id, file name, and dataset name
     """
     path_parts = path.split(os.sep)
-    return path_parts[-4], path_parts[-1]
+    return path_parts[-4], path_parts[-1], path_parts[-5]
 
 
 def create_registration_folder_for_bids_subject(
@@ -35,3 +35,17 @@ def create_registration_folder_for_bids_subject(
         os.makedirs(subject_folder)
 
     return subject_folder
+
+
+def extract_subject_id_from_bids_path_exception(path: str):
+    """
+    Extracts the subject id from the path.
+
+    Args:
+        path (str): path to the file
+
+    Returns:
+        tuple[str, str]: subject id, file name, and dataset name
+    """
+    path_parts = path.split(os.sep)
+    return path_parts[-2], path_parts[-1], path_parts[-3]
