@@ -48,4 +48,4 @@ def extract_subject_id_from_bids_path_exception(path: str):
         tuple[str, str]: subject id, file name, and dataset name
     """
     path_parts = path.split(os.sep)
-    return path_parts[-2], path_parts[-1], path_parts[-3]
+    return path_parts[-2], path_parts[-1], path_parts[-4]

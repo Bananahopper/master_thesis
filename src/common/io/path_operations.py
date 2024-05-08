@@ -193,3 +193,18 @@ def extract_file_name_from_path(path: str):
     """
     path_split = path.split(os.sep)
     return path_split[-1]
+
+
+def extract_fsd_from_output_analysis_path(path: str):
+    """
+    Extracts the subject id, file name, and dataset name from the output_analysis path.
+
+    Args:
+        path (str): path to the file
+
+    Returns:
+        tuple[str, str, str]: subject id, file name, and dataset name
+    """
+
+    path_parts = path.split(os.sep)
+    return path_parts[-2], path_parts[-1], path_parts[-4]
