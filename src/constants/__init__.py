@@ -7,6 +7,7 @@ REGISTRATION_FOLDER = os.path.join(WORK_PATH, "output_registration")
 
 WORK_PATH_CAPTK = "/scratch/users/ggaspar/CaPTk"
 REGISTRATION_FOLDER_CAPTK = os.path.join(WORK_PATH_CAPTK, "output_registration")
+LOG_FOLDER = os.path.join(WORK_PATH_CAPTK, "logs")
 
 # ============================ NAME CONSTANTS ============================
 AFFINE_NAME = "affine.mat"
@@ -20,5 +21,5 @@ HARVARD_CORT_ATLAS_PATH = "src/constants/atlases/HarvardOxford-cort-maxprob-thr2
 HARVARD_SUB_ATLAS_PATH = "src/constants/atlases/HarvardOxford-sub-maxprob-thr25-2mm.nii/HarvardOxford-sub-maxprob-thr25-2mm.nii"
 
 # ============================ CREATE FOLDERS ============================
-# if not os.path.exists(REGISTRATION_FOLDER):
-#     os.makedirs(REGISTRATION_FOLDER)
+# if not os.path.exists(LOG_FOLDER):
+#     os.makedirs(LOG_FOLDER)

@@ -1,5 +1,7 @@
 import glob
 import os
+from src.constants.dataset_constants.btp import BTP_REGISTRATION_FOLDER
+from src.constants.dataset_constants.btp import BTP_FOLDER_PATH
 from src.constants.dataset_constants.burdenko import (
     BURDENKO_CAPTK_FOLDER_PATH,
     BURDENKO_FOLDER_PATH,
@@ -15,7 +17,15 @@ from src.common.io.bids_path_operations import (
     create_registration_folder_for_bids_subject,
     extract_subject_id_from_bids_path_exception,
 )
-from src.constants.dataset_constants.qin import QIN_FOLDER_PATH, QIN_REGISTRATION_FOLDER
+from src.constants.dataset_constants.qin import (
+    QIN_CAPTK_FOLDER_PATH,
+    QIN_FOLDER_PATH,
+    QIN_REGISTRATION_FOLDER,
+)
+from src.constants.dataset_constants.lgg_1p19qdeletion import (
+    LGG_1P19QDELETION_FOLDER_PATH,
+    LGG_1P19QDELETION_REGISTRATION_FOLDER,
+)
 from src.common.io.brats_path_operation import (
     create_registration_folder_for_brats_subject,
     extract_subject_id_from_brats_path,
@@ -47,7 +57,7 @@ def extract_subject_id_from_file_path(path: str):
     """
     if path.startswith(BRATS_FOLDER_PATH) or path.startswith(BRATS_CAPTK_FOLDER_PATH):
         return extract_subject_id_from_brats_path(path)
-    elif path.startswith(QIN_FOLDER_PATH):
+    elif path.startswith(QIN_FOLDER_PATH) or path.startswith(QIN_CAPTK_FOLDER_PATH):
         return extract_subject_id_from_bids_path(path)
     elif path.startswith(RHUH_FOLDER_PATH):
         return extract_subject_id_from_rhuh_path(path)
@@ -55,6 +65,10 @@ def extract_subject_id_from_file_path(path: str):
         BURDENKO_CAPTK_FOLDER_PATH
     ):
         return extract_subject_id_from_bids_path_exception(path)
+    elif path.startswith(BTP_FOLDER_PATH):
+        return extract_subject_id_from_bids_path(path)
+    elif path.startswith(LGG_1P19QDELETION_FOLDER_PATH):
+        return extract_subject_id_from_bids_path(path)
 
 
 def create_registration_folder_for_subject_file_path(
@@ -81,6 +95,14 @@ def create_registration_folder_for_subject_file_path(
     elif path.startswith(BURDENKO_FOLDER_PATH):
         subject_folder = create_registration_folder_for_bids_subject(
             BURDENKO_REGISTRATION_FOLDER, subject_id
+        )
+    elif path.startswith(BTP_FOLDER_PATH):
+        subject_folder = create_registration_folder_for_bids_subject(
+            BTP_REGISTRATION_FOLDER, subject_id
+        )
+    elif path.startswith(LGG_1P19QDELETION_FOLDER_PATH):
+        subject_folder = create_registration_folder_for_bids_subject(
+            LGG_1P19QDELETION_REGISTRATION_FOLDER, subject_id
         )
 
     affine_folder = os.path.join(subject_folder, "affine")

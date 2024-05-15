@@ -10,7 +10,7 @@ def extract_subject_id_from_rhuh_path(path: str):
         path (str): path to the file
 
     Returns:
-        tuple[str, str]: subject id and file name
+        tuple[str, str]: subject id, file name, and dataset_name
     """
     path_parts = path.split(os.sep)
     return path_parts[-3], path_parts[-1], path_parts[-4]

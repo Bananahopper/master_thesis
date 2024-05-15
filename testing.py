@@ -1,6 +1,8 @@
 import pandas as pd
 import glob
 
+from src.common.io.path_operations import extract_subject_id_from_file_path
+
 "Burdenko-GBM-Progression/per_region_dist/sub-*/*_cortical.csv"
 "Burdenko-GBM-Progression/per_region_dist/sub-*/*_subcortical.csv"
 

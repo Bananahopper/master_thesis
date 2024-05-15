@@ -32,7 +32,7 @@ if __name__ == "__main__":
         "--dataset_name", type=str, required=True, help="Name of the dataset"
     )
     parser.add_argument(
-        "--labels", type=bool, required=True, help="Whether to use labels"
+        "--labels", type=bool, required=False, help="Whether to use labels"
     )
     parser.add_argument(
         "--necrotic_core",
