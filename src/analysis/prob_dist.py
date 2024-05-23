@@ -16,17 +16,13 @@ class ProbDist:
     def __init__(
         self,
         dataset_name: str,
-        labels=False,
-        necrotic_core=None,
-        enhancing_region=None,
-        edema=None,
+        whole_tumor,
+        edema: int = None,
     ):
 
         self.dataset_name = dataset_name
-        self.necrotic_core = necrotic_core
-        self.enhancing_region = enhancing_region
         self.edema = edema
-        self.labels = labels
+        self.whole_tumor = whole_tumor
         self.SAVE_PATH = os.path.join(
             ANALYSIS_FOLDER_CAPTK, f"{dataset_name}/prob_dist"
         )
@@ -37,9 +33,7 @@ class ProbDist:
         logging.info(
             f"""Running ProbDist with the following parameters:
                      Dataset name: {self.dataset_name},
-                     Labels: {self.labels},
-                     Necrotic core: {self.necrotic_core},
-                     Enhancing region: {self.enhancing_region},
+                     Whole tumor: {self.whole_tumor},
                      Edema: {self.edema},
                      Save path: {self.SAVE_PATH}"""
         )
@@ -69,22 +63,9 @@ class ProbDist:
         result_array_whole_tumor = np.zeros(
             (sample_img.shape[0], sample_img.shape[1], sample_img.shape[2])
         )
-        result_array_necrotic_core = np.zeros(
-            (sample_img.shape[0], sample_img.shape[1], sample_img.shape[2])
-        )
-        result_array_enhancing_region = np.zeros(
-            (sample_img.shape[0], sample_img.shape[1], sample_img.shape[2])
-        )
-        result_array_edema = np.zeros(
-            (sample_img.shape[0], sample_img.shape[1], sample_img.shape[2])
-        )
 
-        if self.labels == True:
+        if self.whole_tumor == True:
             for file in file_list:
-
-                logging.info(f"Processing file: {file}")
-
-                # Whole tumor
                 img = nib.load(file)
                 data = img.get_fdata()
                 # get binary mask
@@ -92,39 +73,20 @@ class ProbDist:
 
                 result_array_whole_tumor += data
 
-            for file in file_list:
-                # Necrotic core
-                img = nib.load(file)
-                data = img.get_fdata()
-                # Get necrotic core
-                data = data == self.necrotic_core
-                data[data > 0] = 1
-
-                result_array_necrotic_core += data
-            for file in file_list:
-                # Enhancing region
-                img = nib.load(file)
-                data = img.get_fdata()
-                # Get enhancing region
-                data = data == self.enhancing_region
-                data[data > 0] = 1
-
-                result_array_enhancing_region += data
-            for file in file_list:
-                # Edema
-                img = nib.load(file)
-                data = img.get_fdata()
-                # Get edema
-                data = data == self.edema
-                data[data > 0] = 1
-
-                result_array_edema += data
-
-        elif self.labels == False:
+        else:
             for file in file_list:
                 img = nib.load(file)
                 data = img.get_fdata()
-                # get binary mask
+
+                try:
+                    if self.edema != None:
+                        data[data == self.edema] = 0
+                except:
+                    logging.error(
+                        "Edema has to have a value to run when whole_tumor = False."
+                    )
+                    return None
+
                 data[data > 0] = 1
 
                 result_array_whole_tumor += data
@@ -133,106 +95,54 @@ class ProbDist:
             f"Max value in whole tumor: {max(result_array_whole_tumor.flatten())}"
         )
 
-        if self.labels == True:
-            self.save_result_as_nifti(
-                result_array_whole_tumor,
-                registration_modality,
-                "whole_tumor",
-                affine,
-                header,
-                extra,
-                file_map,
-            )
-            self.save_result_as_nifti(
-                result_array_necrotic_core,
-                registration_modality,
-                "necrotic_core",
-                affine,
-                header,
-                extra,
-                file_map,
-            )
-            self.save_result_as_nifti(
-                result_array_enhancing_region,
-                registration_modality,
-                "enhancing_region",
-                affine,
-                header,
-                extra,
-                file_map,
-            )
-            self.save_result_as_nifti(
-                result_array_edema,
-                registration_modality,
-                "edema",
-                affine,
-                header,
-                extra,
-                file_map,
-            )
-        elif self.labels == False:
-            self.save_result_as_nifti(
-                result_array_whole_tumor,
-                registration_modality,
-                "whole_tumor",
-                affine,
-                header,
-                extra,
-                file_map,
-            )
+        self.save_result_as_nifti(
+            result_array_whole_tumor,
+            registration_modality,
+            affine,
+            header,
+            extra,
+            file_map,
+        )
 
-        if self.labels == True:
-            self.visualize_surface_plot(
-                result_array_whole_tumor,
-                registration_modality,
-                "whole_tumor",
-                self.dataset_name,
-            )
-            self.visualize_surface_plot(
-                result_array_necrotic_core,
-                registration_modality,
-                "necrotic_core",
-                self.dataset_name,
-            )
-            self.visualize_surface_plot(
-                result_array_enhancing_region,
-                registration_modality,
-                "enhancing_region",
-                self.dataset_name,
-            )
-            self.visualize_surface_plot(
-                result_array_edema, registration_modality, "edema", self.dataset_name
-            )
-        elif self.labels == False:
-            self.visualize_surface_plot(
-                result_array_whole_tumor,
-                registration_modality,
-                "whole_tumor",
-                self.dataset_name,
-            )
+        len_files = len(file_list)
+
+        self.visualize_surface_plot(
+            result_array_whole_tumor,
+            registration_modality,
+            self.dataset_name,
+            len_files,
+        )
 
     def save_result_as_nifti(
-        self, result_array, registration_modality, name, affine, header, extra, file_map
+        self, result_array, registration_modality, affine, header, extra, file_map
     ):
         img = nib.Nifti1Image(result_array, affine, header, extra, file_map)
-
-        logging.info(
-            f"Saving to path: {self.SAVE_PATH}/{registration_modality}/probdist_{self.dataset_name}_{name}.nii"
-        )
 
         if not os.path.exists(f"{self.SAVE_PATH}/{registration_modality}"):
             os.makedirs(f"{self.SAVE_PATH}/{registration_modality}")
 
-        nib.save(
-            img,
-            f"{self.SAVE_PATH}/{registration_modality}/probdist_{self.dataset_name}_{name}.nii",
-        )
+        if self.whole_tumor == True:
+            nib.save(
+                img,
+                f"{self.SAVE_PATH}/{registration_modality}/probdist_{self.dataset_name}_whole_tumor.nii",
+            )
+            logging.info(
+                f"Saving to path: {self.SAVE_PATH}/{registration_modality}/probdist_{self.dataset_name}_whole_tumor.nii"
+            )
+        else:
+            nib.save(
+                img,
+                f"{self.SAVE_PATH}/{registration_modality}/probdist_{self.dataset_name}.nii",
+            )
+            logging.info(
+                f"Saving to path: {self.SAVE_PATH}/{registration_modality}/probdist_{self.dataset_name}.nii"
+            )
 
     def visualize_surface_plot(
-        self, result_array, registration_modality, name, dataset_name
+        self, result_array, registration_modality, dataset_name, len_files
     ):
         collapsed_array = np.sum(result_array, axis=2)
-        collapsed_array_sum = sum(collapsed_array.flatten())
+        collapsed_array_sum = len_files
         collapsed_array_plot = collapsed_array / collapsed_array_sum
         collapsed_array_plot = collapsed_array_plot
 
@@ -244,7 +154,9 @@ class ProbDist:
         ax = fig.add_subplot(111, projection="3d")
         ax.plot_surface(X, Y, collapsed_array, cmap="viridis")
 
-        ax.set_title(f"Collapsed Array Surface Plot - {name}")
+        ax.set_title(
+            f"Collapsed Array Surface Plot - {self.dataset_name} - {'whole_tumor' if self.whole_tumor == True else 'no_edema'}"
+        )
         ax.set_xlabel("Left View")
         ax.set_ylabel("Posterior View")
         ax.set_zlabel("Values")
@@ -252,6 +164,11 @@ class ProbDist:
         if not os.path.exists(f"{self.SAVE_PATH}/{registration_modality}"):
             os.makedirs(f"{self.SAVE_PATH}/{registration_modality}")
 
-        plt.savefig(
-            f"{self.SAVE_PATH}/{registration_modality}/{dataset_name}_surface_plot_{name}.png"
-        )
+        if self.whole_tumor == True:
+            plt.savefig(
+                f"{self.SAVE_PATH}/{registration_modality}/{dataset_name}_surface_plot_whole_tumor.png"
+            )
+        else:
+            plt.savefig(
+                f"{self.SAVE_PATH}/{registration_modality}/{dataset_name}_surface_plot.png"
+            )

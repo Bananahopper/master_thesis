@@ -5,19 +5,26 @@ import argparse
 import logging
 
 
+def str2bool(v):
+    if isinstance(v, bool):
+        return v
+    if v.lower() in ("yes", "true", "t", "y", "1"):
+        return True
+    elif v.lower() in ("no", "false", "f", "n", "0"):
+        return False
+    else:
+        raise argparse.ArgumentTypeError("Boolean value expected.")
+
+
 def main(
     pattern,
     dataset_name,
-    labels,
-    necrotic_core,
-    enhancing_region,
+    whole_tumor,
     edema,
 ):
     prob = ProbDist(
         dataset_name,
-        labels,
-        necrotic_core,
-        enhancing_region,
+        whole_tumor,
         edema,
     )
     prob.run(pattern)
@@ -32,40 +39,28 @@ if __name__ == "__main__":
         "--dataset_name", type=str, required=True, help="Name of the dataset"
     )
     parser.add_argument(
-        "--labels", type=bool, required=False, help="Whether to use labels"
+        "--whole_tumor", type=str2bool, required=True, help="Whether to use labels"
     )
     parser.add_argument(
-        "--necrotic_core",
-        type=bool,
-        required=False,
-        help="Whether to use necrotic core",
-    )
-    parser.add_argument(
-        "--enhancing_region",
-        type=bool,
-        required=False,
-        help="Whether to use enhancing region",
-    )
-    parser.add_argument(
-        "--edema", type=bool, required=False, help="Whether to use edema"
+        "--edema", type=int, required=False, help="Whether to use edema"
     )
     args = parser.parse_args()
 
     # if not os.path.exists(WORK_PATH_CAPTK, "logs/"):
     #     os.makedirs(WORK_PATH_CAPTK, "logs")
 
-    # # Configure logging
-    # logging.basicConfig(
-    #     filename="/scratch/users/ggaspar/CaPTk/logs/prob_dist.log",
-    #     level=logging.INFO,
-    #     format="%(asctime)s - %(levelname)s - %(message)s",
-    # )
+    # Configure logging
+    logging.basicConfig(
+        filename="/scratch/users/ggaspar/CaPTk/prob_dist.log",
+        level=logging.INFO,
+        format="%(asctime)s - %(levelname)s - %(message)s",
+    )
+
+    logging.info(f"Running ProbDist with the following parameters: {args}")
 
     main(
         args.pattern,
         args.dataset_name,
-        args.labels,
-        args.necrotic_core,
-        args.enhancing_region,
+        args.whole_tumor,
         args.edema,
     )
