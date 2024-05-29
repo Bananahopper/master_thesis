@@ -17,5 +17,6 @@ singularity exec  --no-home \
                   --bind src/:/src \
                   --bind scripts:/scripts \
                   --bind atlases/:/atlases \
+                  --bind logs/:/logs \
                   captk_latest.sif \
                   bash scripts/segmentation/intermediary_tumor_segmentation.sh "$1" "$2" "$3" "$4"

@@ -7,6 +7,8 @@
 #SBATCH -p batch
 #SBATCH --qos=normal
 
+module load tools/Singularity
+source activate CaPTk
 
 singularity exec  --no-home \
                   --bind datasets/:/datasets \
@@ -14,5 +16,6 @@ singularity exec  --no-home \
                   --bind src/:/src \
                   --bind scripts:/scripts \
                   --bind atlases/:/atlases \
+                  --bind logs/:/logs \
                   captk_latest.sif \
                   bash scripts/registration/intermediate_registration.sh "$1" "$2" "$3" "$4" "$5"

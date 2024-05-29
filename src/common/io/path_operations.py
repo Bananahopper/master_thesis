@@ -7,7 +7,10 @@ from src.constants.dataset_constants.burdenko import (
     BURDENKO_FOLDER_PATH,
     BURDENKO_REGISTRATION_FOLDER,
 )
-from src.constants.dataset_constants.rhuh import RHUH_FOLDER_PATH
+from src.constants.dataset_constants.rhuh import (
+    RHUH_FOLDER_PATH,
+    RHUH_FOLDER_PATH_CAPTK,
+)
 from src.common.io.rhuh_path_operations import (
     create_registration_folder_for_rhuh_subject,
     extract_subject_id_from_rhuh_path,
@@ -24,6 +27,7 @@ from src.constants.dataset_constants.qin import (
 )
 from src.constants.dataset_constants.lgg_1p19qdeletion import (
     LGG_1P19QDELETION_FOLDER_PATH,
+    LGG_1P19QDELETION_FOLDER_PATH_CAPTK,
     LGG_1P19QDELETION_REGISTRATION_FOLDER,
 )
 from src.common.io.brats_path_operation import (
@@ -59,7 +63,7 @@ def extract_subject_id_from_file_path(path: str):
         return extract_subject_id_from_brats_path(path)
     elif path.startswith(QIN_FOLDER_PATH) or path.startswith(QIN_CAPTK_FOLDER_PATH):
         return extract_subject_id_from_bids_path(path)
-    elif path.startswith(RHUH_FOLDER_PATH):
+    elif path.startswith(RHUH_FOLDER_PATH) or path.startswith(RHUH_FOLDER_PATH_CAPTK):
         return extract_subject_id_from_rhuh_path(path)
     elif path.startswith(BURDENKO_FOLDER_PATH) or path.startswith(
         BURDENKO_CAPTK_FOLDER_PATH
@@ -67,7 +71,9 @@ def extract_subject_id_from_file_path(path: str):
         return extract_subject_id_from_bids_path_exception(path)
     elif path.startswith(BTP_FOLDER_PATH):
         return extract_subject_id_from_bids_path(path)
-    elif path.startswith(LGG_1P19QDELETION_FOLDER_PATH):
+    elif path.startswith(LGG_1P19QDELETION_FOLDER_PATH) or path.startswith(
+        LGG_1P19QDELETION_FOLDER_PATH_CAPTK
+    ):
         return extract_subject_id_from_bids_path(path)
 
 

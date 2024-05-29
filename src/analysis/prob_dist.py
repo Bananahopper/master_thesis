@@ -104,6 +104,20 @@ class ProbDist:
             file_map,
         )
 
+        result_probability_mask_whole_tumor = self.create_tumor_probability_mask(
+            result_array_whole_tumor
+        )
+
+        self.save_result_as_nifti(
+            result_probability_mask_whole_tumor,
+            registration_modality,
+            affine,
+            header,
+            extra,
+            file_map,
+            probability_mask=True,
+        )
+
         len_files = len(file_list)
 
         self.visualize_surface_plot(
@@ -114,7 +128,14 @@ class ProbDist:
         )
 
     def save_result_as_nifti(
-        self, result_array, registration_modality, affine, header, extra, file_map
+        self,
+        result_array,
+        registration_modality,
+        affine,
+        header,
+        extra,
+        file_map,
+        probability_mask=False,
     ):
         img = nib.Nifti1Image(result_array, affine, header, extra, file_map)
 
@@ -126,6 +147,12 @@ class ProbDist:
                 img,
                 f"{self.SAVE_PATH}/{registration_modality}/probdist_{self.dataset_name}_whole_tumor.nii",
             )
+            if probability_mask == True:
+                nib.save(
+                    img,
+                    f"{self.SAVE_PATH}/{registration_modality}/probdist_{self.dataset_name}_whole_tumor_probability_mask.nii",
+                )
+
             logging.info(
                 f"Saving to path: {self.SAVE_PATH}/{registration_modality}/probdist_{self.dataset_name}_whole_tumor.nii"
             )
@@ -134,9 +161,22 @@ class ProbDist:
                 img,
                 f"{self.SAVE_PATH}/{registration_modality}/probdist_{self.dataset_name}.nii",
             )
+            if probability_mask == True:
+                nib.save(
+                    img,
+                    f"{self.SAVE_PATH}/{registration_modality}/probdist_{self.dataset_name}_probability_mask.nii",
+                )
+
             logging.info(
                 f"Saving to path: {self.SAVE_PATH}/{registration_modality}/probdist_{self.dataset_name}.nii"
             )
+
+    def create_tumor_probability_mask(self, result_array):
+        result_probability_mask_array = result_array / np.sum(result_array)
+
+        result_probability_mask_array[result_probability_mask_array <= 0.05] = 1
+
+        return result_probability_mask_array
 
     def visualize_surface_plot(
         self, result_array, registration_modality, dataset_name, len_files

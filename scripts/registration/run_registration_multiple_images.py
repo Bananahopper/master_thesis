@@ -50,11 +50,11 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    if os.path.exists("output_registration/registration_multiple_images.log"):
-        os.remove("output_registration/registration_multiple_images.log")
+    if os.path.exists("logs/registration_multiple_images.log"):
+        os.remove("logs/registration_multiple_images.log")
 
     logging.basicConfig(
-        filename="output_registration/registration_multiple_images.log",
+        filename="logs/registration_multiple_images.log",
         format="%(asctime)s - %(levelname)s - %(message)s",
         level=logging.INFO,
     )

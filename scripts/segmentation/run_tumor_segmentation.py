@@ -27,11 +27,11 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    if os.path.exists("output_registration/tumor_segmentation.log"):
-        os.remove("output_registration/tumor_segmentation.log")
+    if os.path.exists("logs/tumor_segmentation.log"):
+        os.remove("logs/tumor_segmentation.log")
 
     logging.basicConfig(
-        filename="output_registration/tumor_segmentation.log",
+        filename="logs/tumor_segmentation.log",
         format="%(asctime)s - %(levelname)s - %(message)s",
         level=logging.INFO,
     )

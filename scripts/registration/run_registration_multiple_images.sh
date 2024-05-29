@@ -17,5 +17,6 @@ singularity exec  --no-home \
                   --bind src/:/src \
                   --bind scripts:/scripts \
                   --bind atlases/:/atlases \
+                  --bind logs/:/logs \
                   captk_latest.sif \
                   bash scripts/registration/intermediate_registration_multiple_images.sh "$1" "$2" "$3" "$4" "$5"

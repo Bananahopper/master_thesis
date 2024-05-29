@@ -5,11 +5,12 @@ import pandas as pd
 import os
 import numpy as np
 import logging
+from src.analysis.utils.utils import pad_or_trim_to_match
 from src.common.io.path_operations import (
     extract_subject_id_from_file_path,
     get_file_list_from_pattern,
 )
-from src.analysis import ANALYSIS_FOLDER_CAPTK
+from src.analysis import ANALYSIS_FOLDER, ANALYSIS_FOLDER_CAPTK
 from src.constants.analysis__constants.cort_sub_labels import CORT_LABELS, SUB_LABELS
 
 
@@ -49,15 +50,24 @@ class PerRegionDist:
             original_seg_list, cortical_seg_list, subcortical_seg_list
         ):
 
+            print(original_seg_file)
+            print(cortical_seg_file)
+            print(subcortical_seg_file)
+
             logging.info(f"Processing {original_seg_file}")
 
             patient_id, _, dataset_name = extract_subject_id_from_file_path(
                 original_seg_file
             )
 
-            save_folder = os.path.join(
-                ANALYSIS_FOLDER_CAPTK, dataset_name, "per_region_dist"
-            )
+            if os.path.exists(ANALYSIS_FOLDER_CAPTK):
+                save_folder = os.path.join(
+                    ANALYSIS_FOLDER_CAPTK, dataset_name, "per_region_dist"
+                )
+            else:
+                save_folder = os.path.join(
+                    ANALYSIS_FOLDER, dataset_name, "per_region_dist"
+                )
             if not os.path.exists(save_folder):
                 os.makedirs(save_folder)
 
@@ -114,11 +124,6 @@ class PerRegionDist:
         cort_labels = [CORT_LABELS[i] for i in cort_values]
         sub_labels = [SUB_LABELS[i] for i in subcort_values]
 
-        logging.info(f"Cortical labels: {cort_labels}")
-        logging.info(f"Subcortical labels: {sub_labels}")
-        logging.info(f"Cortical values: {cort_values}")
-        logging.info(f"Subcortical values: {subcort_values}")
-
         # Create a dictionary to store the values and their corresponding labels
         cort_dict = {"Values": cort_values, "Labels": cort_labels}
         subcort_dict = {"Values": subcort_values, "Labels": sub_labels}
@@ -133,56 +138,69 @@ class PerRegionDist:
 
         # Get tumor in region / total tumor
 
-        if self.mode == 1:
-            for region in cort_values:
-                region_mask = np.zeros_like(original_seg_data)
-                region_mask[cortical_seg_data == region] = 1
-                tumor_overlap = original_seg_data * region_mask
+        for region in cort_values:
+            region_mask = np.zeros_like(original_seg_data)
+
+            if region_mask.shape != cortical_seg_data.shape:
+
+                logging.info("Shapes do not match. Padding or trimming.")
+                logging.info(f"Region mask before cut: {region_mask.shape}")
+                logging.info(f"Cortical seg data before cut: {cortical_seg_data.shape}")
+                print("Shapes do not match. Padding or trimming.")
+                print(f"Region mask before cut: {region_mask.shape}")
+                print(f"Cortical seg data before cut: {cortical_seg_data.shape}")
+
+                cortical_seg_data = pad_or_trim_to_match(
+                    region_mask, cortical_seg_data, [8, 13]
+                )
+
+            print(f"Region mask after cut : {region_mask.shape}")
+            print(f"Cortical seg data after cut : {cortical_seg_data.shape}")
+
+            region_mask[cortical_seg_data == region] = 1
+            tumor_overlap = original_seg_data * region_mask
+            sum_tumor_overlap = np.sum(tumor_overlap)
+
+            if self.mode == 1:
                 sum_tumor = np.sum(original_seg_data)
-                sum_tumor_overlap = np.sum(tumor_overlap)
                 # Append to dataframe
                 cort_df.loc[cort_df["Values"] == region, "Tumor in region"] = (
                     sum_tumor_overlap / sum_tumor
                 )
-
-            for region in subcort_values:
-                region_mask = np.zeros_like(original_seg_data)
-                region_mask[subcortical_seg_data == region] = 1
-                tumor_overlap = original_seg_data * region_mask
-                sum_tumor = np.sum(original_seg_data)
-                sum_tumor_overlap = np.sum(tumor_overlap)
-                # Append to dataframe
-                sub_df.loc[sub_df["Values"] == region, "Tumor in region"] = (
-                    sum_tumor_overlap / sum_tumor
-                )
-
-            return cort_df, sub_df
-
-        # Get tumor in region / total region
-        elif self.mode == 2:
-            for region in cort_values:
-                region_mask = np.zeros_like(original_seg_data)
-                region_mask[cortical_seg_data == region] = 1
-                tumor_overlap = original_seg_data * region_mask
+            elif self.mode == 2:
                 sum_region = np.sum(region_mask)
-                sum_tumor_overlap = np.sum(tumor_overlap)
                 # Append to dataframe
                 cort_df.loc[cort_df["Values"] == region, "Tumor in region"] = (
                     sum_tumor_overlap / sum_region
                 )
 
-            for region in subcort_values:
-                region_mask = np.zeros_like(original_seg_data)
-                region_mask[subcortical_seg_data == region] = 1
-                tumor_overlap = original_seg_data * region_mask
+        for region in subcort_values:
+            region_mask = np.zeros_like(original_seg_data)
+
+            if region_mask.shape != subcortical_seg_data.shape:
+
+                subcortical_seg_data = pad_or_trim_to_match(
+                    region_mask, subcortical_seg_data, [8, 13]
+                )
+
+            region_mask[subcortical_seg_data == region] = 1
+            tumor_overlap = original_seg_data * region_mask
+            sum_tumor_overlap = np.sum(tumor_overlap)
+
+            if self.mode == 1:
+                sum_tumor = np.sum(original_seg_data)
+                # Append to dataframe
+                sub_df.loc[sub_df["Values"] == region, "Tumor in region"] = (
+                    sum_tumor_overlap / sum_tumor
+                )
+            elif self.mode == 2:
                 sum_region = np.sum(region_mask)
-                sum_tumor_overlap = np.sum(tumor_overlap)
                 # Append to dataframe
                 sub_df.loc[sub_df["Values"] == region, "Tumor in region"] = (
                     sum_tumor_overlap / sum_region
                 )
 
-            return cort_df, sub_df
+        return cort_df, sub_df
 
     def save_data(
         self,
@@ -191,6 +209,9 @@ class PerRegionDist:
         tumor_per_region_cortical,
         tumor_per_region_subcortical,
     ):
+
+        logging.info(f"Saving data to: {subject_folder}")
+
         # Save the data
         tumor_per_region_cortical.to_csv(
             subject_folder + f"/{patient_id}_cortical.csv",

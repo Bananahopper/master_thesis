@@ -33,25 +33,31 @@ def main(
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Calculate probability distribution")
     parser.add_argument(
-        "--pattern", type=str, required=True, help="Pattern for the files"
+        "--pattern",
+        type=str,
+        required=True,
+        help="Pattern for the registered tumor segmentations",
     )
     parser.add_argument(
         "--dataset_name", type=str, required=True, help="Name of the dataset"
     )
     parser.add_argument(
-        "--whole_tumor", type=str2bool, required=True, help="Whether to use labels"
+        "--whole_tumor",
+        type=str2bool,
+        required=True,
+        help="Whether to consider the whole tumor, or consider only the tumor core without the edema.",
     )
     parser.add_argument(
-        "--edema", type=int, required=False, help="Whether to use edema"
+        "--edema",
+        type=int,
+        required=False,
+        help="The int corresponding to the edema label.",
     )
     args = parser.parse_args()
 
-    # if not os.path.exists(WORK_PATH_CAPTK, "logs/"):
-    #     os.makedirs(WORK_PATH_CAPTK, "logs")
-
     # Configure logging
     logging.basicConfig(
-        filename="/scratch/users/ggaspar/CaPTk/prob_dist.log",
+        filename="/scratch/users/ggaspar/CaPTk/logs/prob_dist.log",
         level=logging.INFO,
         format="%(asctime)s - %(levelname)s - %(message)s",
     )

@@ -20,11 +20,11 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    if os.path.exists("output_registration/brain_extraction.log"):
-        os.remove("output_registration/brain_extraction.log")
+    if os.path.exists("logs/brain_extraction.log"):
+        os.remove("logs/brain_extraction.log")
 
     logging.basicConfig(
-        filename="output_registration/brain_extraction.log",
+        filename="logs/brain_extraction.log",
         format="%(asctime)s - %(levelname)s - %(message)s",
         level=logging.INFO,
     )

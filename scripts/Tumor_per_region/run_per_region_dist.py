@@ -32,14 +32,12 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    if os.path.exists(
-        "scratch/users/ggaspar/CaPTk/output_analysis/per_region_stats.log"
-    ):
-        os.remove("scratch/users/ggaspar/CaPTk/output_analysis/per_region_stats.log")
+    if os.path.exists("scratch/users/ggaspar/CaPTk/logs/per_region_stats.log"):
+        os.remove("scratch/users/ggaspar/CaPTk/logs/per_region_stats.log")
 
     # Configure logging
     logging.basicConfig(
-        filename="/scratch/users/ggaspar/CaPTk/output_analysis/per_region_stats.log",
+        filename="/scratch/users/ggaspar/CaPTk/logs/per_region_stats.log",
         level=logging.INFO,
         format="%(asctime)s - %(levelname)s - %(message)s",
     )
