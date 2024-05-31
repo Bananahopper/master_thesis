@@ -48,3 +48,24 @@ def pad_or_trim_to_match(
         )
 
     return source_array
+
+
+def extract_voxel_dimensions_from_nifti(nifti_file: str):
+    """
+    Extract the voxel dimensions from a nifti file.
+
+    Args:
+        nifti_file (str): The path to the nifti file.
+
+    Returns:
+        tuple: The voxel dimensions.
+    """
+    import nibabel as nib
+
+    img = nib.load(nifti_file)
+    voxel_dimensions = (img.header["pixdim"])[1:4]
+
+    print("Voxel dimensions:")
+    print("  x = {} mm".format(voxel_dimensions[0]))
+    print("  y = {} mm".format(voxel_dimensions[1]))
+    print("  z = {} mm".format(voxel_dimensions[2]))

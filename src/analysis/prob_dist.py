@@ -10,18 +10,17 @@ from common.io.path_operations import (
     get_file_list_from_pattern,
 )
 from constants import MNI_ATLAS_PATH
+from src.constants.utils import get_edema_value
 
 
 class ProbDist:
     def __init__(
         self,
         dataset_name: str,
-        whole_tumor,
-        edema: int = None,
+        whole_tumor: bool,
     ):
 
         self.dataset_name = dataset_name
-        self.edema = edema
         self.whole_tumor = whole_tumor
         self.SAVE_PATH = os.path.join(
             ANALYSIS_FOLDER_CAPTK, f"{dataset_name}/prob_dist"
@@ -34,7 +33,6 @@ class ProbDist:
             f"""Running ProbDist with the following parameters:
                      Dataset name: {self.dataset_name},
                      Whole tumor: {self.whole_tumor},
-                     Edema: {self.edema},
                      Save path: {self.SAVE_PATH}"""
         )
 
@@ -45,6 +43,7 @@ class ProbDist:
             return None
 
         file_list = get_file_list_from_pattern(pattern)
+        self.edema = get_edema_value(file_list[0])
         _, _, registration_modality, _ = extract_srf_from_prob_dist_path(file_list[0])
 
         self.process_data(file_list, registration_modality)
@@ -137,7 +136,7 @@ class ProbDist:
         file_map,
         probability_mask=False,
     ):
-        img = nib.Nifti1Image(result_array, affine, header, extra, file_map)
+        img = nib.Nifti2Image(result_array, affine, header, extra, file_map)
 
         if not os.path.exists(f"{self.SAVE_PATH}/{registration_modality}"):
             os.makedirs(f"{self.SAVE_PATH}/{registration_modality}")
@@ -174,9 +173,13 @@ class ProbDist:
     def create_tumor_probability_mask(self, result_array):
         result_probability_mask_array = result_array / np.sum(result_array)
 
-        result_probability_mask_array[result_probability_mask_array <= 0.05] = 1
+        mask = (result_probability_mask_array >= 0) & (
+            result_probability_mask_array <= 0.5
+        )
 
-        return result_probability_mask_array
+        result_probability_mask = result_probability_mask_array[mask]
+
+        return result_probability_mask
 
     def visualize_surface_plot(
         self, result_array, registration_modality, dataset_name, len_files

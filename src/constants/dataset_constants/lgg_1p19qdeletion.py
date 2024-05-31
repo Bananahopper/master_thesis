@@ -11,3 +11,7 @@ LGG_1P19QDELETION_FOLDER_PATH_CAPTK = os.path.join(
 LGG_1P19QDELETION_REGISTRATION_FOLDER = os.path.join(
     REGISTRATION_FOLDER, LGG_1P19QDELETION_NAME
 )
+
+# ============================ Tumor characteristics constants ============================
+
+LGG_EDEMA = 2

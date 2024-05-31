@@ -1,5 +1,10 @@
 import glob
 import os
+from src.constants.dataset_constants.ucsf_pdgm_v3 import (
+    UCSF_CAPTK_FOLDER_PATH,
+    UCSF_FOLDER_PATH,
+    UCSF_REGISTRATION_FOLDER,
+)
 from src.constants.dataset_constants.btp import BTP_REGISTRATION_FOLDER
 from src.constants.dataset_constants.btp import BTP_FOLDER_PATH
 from src.constants.dataset_constants.burdenko import (
@@ -37,6 +42,10 @@ from src.common.io.brats_path_operation import (
 from src.constants.dataset_constants.brats import (
     BRATS_CAPTK_FOLDER_PATH,
     BRATS_FOLDER_PATH,
+    BRATS_REGISTRATION_FOLDER,
+    BRATS_SSA_CAPTK_FOLDER_PATH,
+    BRATS_SSA_FOLDER_PATH,
+    BRATS_SSA_REGISTRATION_FOLDER,
 )
 
 
@@ -61,6 +70,10 @@ def extract_subject_id_from_file_path(path: str):
     """
     if path.startswith(BRATS_FOLDER_PATH) or path.startswith(BRATS_CAPTK_FOLDER_PATH):
         return extract_subject_id_from_brats_path(path)
+    elif path.startswith(BRATS_SSA_FOLDER_PATH) or path.startswith(
+        BRATS_SSA_CAPTK_FOLDER_PATH
+    ):
+        return extract_subject_id_from_brats_path(path)
     elif path.startswith(QIN_FOLDER_PATH) or path.startswith(QIN_CAPTK_FOLDER_PATH):
         return extract_subject_id_from_bids_path(path)
     elif path.startswith(RHUH_FOLDER_PATH) or path.startswith(RHUH_FOLDER_PATH_CAPTK):
@@ -75,6 +88,8 @@ def extract_subject_id_from_file_path(path: str):
         LGG_1P19QDELETION_FOLDER_PATH_CAPTK
     ):
         return extract_subject_id_from_bids_path(path)
+    elif path.startswith(UCSF_FOLDER_PATH) or path.startswith(UCSF_CAPTK_FOLDER_PATH):
+        return extract_subject_id_from_brats_path(path)
 
 
 def create_registration_folder_for_subject_file_path(
@@ -91,7 +106,13 @@ def create_registration_folder_for_subject_file_path(
     """
     subject_id, _, _ = extract_subject_id_from_file_path(path)
     if path.startswith(BRATS_FOLDER_PATH):
-        subject_folder = create_registration_folder_for_brats_subject(subject_id)
+        subject_folder = create_registration_folder_for_brats_subject(
+            BRATS_REGISTRATION_FOLDER, subject_id
+        )
+    if path.startswith(BRATS_SSA_FOLDER_PATH):
+        subject_folder = create_registration_folder_for_brats_subject(
+            BRATS_SSA_REGISTRATION_FOLDER, subject_id
+        )
     elif path.startswith(QIN_FOLDER_PATH):
         subject_folder = create_registration_folder_for_bids_subject(
             QIN_REGISTRATION_FOLDER, subject_id
@@ -109,6 +130,10 @@ def create_registration_folder_for_subject_file_path(
     elif path.startswith(LGG_1P19QDELETION_FOLDER_PATH):
         subject_folder = create_registration_folder_for_bids_subject(
             LGG_1P19QDELETION_REGISTRATION_FOLDER, subject_id
+        )
+    elif path.startswith(UCSF_FOLDER_PATH):
+        subject_folder = create_registration_folder_for_brats_subject(
+            UCSF_REGISTRATION_FOLDER, subject_id
         )
 
     affine_folder = os.path.join(subject_folder, "affine")

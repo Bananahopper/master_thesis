@@ -1,9 +1,5 @@
-import numpy as np
+from src.analysis.utils.utils import extract_voxel_dimensions_from_nifti
 
-# Example arrays with different shapes
-original_seg_data = np.random.rand(5, 8, 10)
-original_seg_data2 = np.random.rand(5, 8, 10)
-original_seg_data = original_seg_data + original_seg_data2
+path = "src/constants/atlases/mni_icbm152_t1_tal_nlin_asym_09a_brain_only/mni_icbm152_t1_tal_nlin_asym_09a_brain_only.nii"
 
-original_seg_data = original_seg_data / np.sum(original_seg_data)
-print(np.sum(original_seg_data))
+print(extract_voxel_dimensions_from_nifti(path))

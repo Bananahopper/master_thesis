@@ -11,3 +11,7 @@ T1_PATH_PATTERN = os.path.join(RHUH_FOLDER_PATH, "*", "0", "*adc.nii.gz")
 SEG_PATH_PATTERN = os.path.join(RHUH_FOLDER_PATH, "*", "0", "*segmentations.nii.gz")
 
 RHUH_REGISTRATION_FOLDER = os.path.join(REGISTRATION_FOLDER, RHUH_NAME)
+
+# ============================ Tumor characteristics constants ============================
+
+RHUH_EDEMA = 2

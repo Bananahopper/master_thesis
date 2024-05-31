@@ -11,3 +11,7 @@ BURDENKO_REGISTRATION_FOLDER = os.path.join(REGISTRATION_FOLDER, BURDENKO_NAME)
 # ============================ BURDENKO CAPTK ============================
 
 BURDENKO_CAPTK_FOLDER_PATH = os.path.join(WORK_PATH_CAPTK, "datasets", BURDENKO_NAME)
+
+# ============================ Tumor characteristics constants ============================
+
+BURDENKO_EDEMA = 2

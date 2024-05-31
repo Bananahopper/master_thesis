@@ -14,5 +14,4 @@ source activate CaPTk
 python /scratch/users/ggaspar/CaPTk/scripts/prob_dist/run_prob_dist.py \
        --pattern "$1" \
        --dataset_name "$2" \
-       --whole_tumor "$3" \
-       --edema "$4" 
+       --whole_tumor "$3" 

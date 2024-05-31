@@ -20,12 +20,10 @@ def main(
     pattern,
     dataset_name,
     whole_tumor,
-    edema,
 ):
     prob = ProbDist(
         dataset_name,
         whole_tumor,
-        edema,
     )
     prob.run(pattern)
 
@@ -47,12 +45,6 @@ if __name__ == "__main__":
         required=True,
         help="Whether to consider the whole tumor, or consider only the tumor core without the edema.",
     )
-    parser.add_argument(
-        "--edema",
-        type=int,
-        required=False,
-        help="The int corresponding to the edema label.",
-    )
     args = parser.parse_args()
 
     # Configure logging
@@ -68,5 +60,4 @@ if __name__ == "__main__":
         args.pattern,
         args.dataset_name,
         args.whole_tumor,
-        args.edema,
     )

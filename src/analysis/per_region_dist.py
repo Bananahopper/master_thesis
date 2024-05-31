@@ -5,6 +5,7 @@ import pandas as pd
 import os
 import numpy as np
 import logging
+from src.constants.utils import get_edema_value
 from src.analysis.utils.utils import pad_or_trim_to_match
 from src.common.io.path_operations import (
     extract_subject_id_from_file_path,
@@ -35,6 +36,8 @@ class PerRegionDist:
         except:
             logging.error("Error getting file list from pattern.")
             return
+
+        self.edema = get_edema_value(original_seg_list[0])
 
         if len(original_seg_list) != len(cortical_seg_list) or len(
             original_seg_list
@@ -103,6 +106,7 @@ class PerRegionDist:
         subcortical_seg = nib.load(subcortical_seg_file)
 
         original_seg_data = original_seg.get_fdata().astype(np.int16)
+        original_seg_data[original_seg_data == self.edema] = 0
         original_seg_data[original_seg_data > 0] = 1
         cortical_seg_data = cortical_seg.get_fdata().astype(np.int16)
         subcortical_seg_data = subcortical_seg.get_fdata().astype(np.int16)

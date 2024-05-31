@@ -12,3 +12,7 @@ QIN_REGISTRATION_FOLDER = os.path.join(REGISTRATION_FOLDER, QIN_NAME)
 # ============================ QIN CAPTK ============================
 
 QIN_CAPTK_FOLDER_PATH = os.path.join(WORK_PATH_CAPTK, "datasets", QIN_NAME)
+
+# ============================ Tumor characteristics constants ============================
+
+QIN_EDEMA = 2

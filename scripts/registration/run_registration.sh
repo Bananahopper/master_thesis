@@ -7,9 +7,6 @@
 #SBATCH -p batch
 #SBATCH --qos=normal
 
-module load tools/Singularity
-source activate CaPTk
-
 singularity exec  --no-home \
                   --bind datasets/:/datasets \
                   --bind output_registration/:/output_registration \

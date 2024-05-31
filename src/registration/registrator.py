@@ -76,6 +76,9 @@ class Registrator:
         file_list = get_file_list_from_pattern(source)
         label_list = get_file_list_from_pattern(label)
 
+        logging.info("Number of files: " + str(len(file_list)))
+        logging.info("Number of labels: " + str(len(label_list)))
+
         if len(file_list) != len(label_list):
 
             sub_missing_modality = check_sub_with_missing_files(file_list, label_list)

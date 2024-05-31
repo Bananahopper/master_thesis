@@ -16,7 +16,9 @@ def extract_subject_id_from_brats_path(path: str):
     return path_parts[-2], path_parts[-1], path_parts[-3]
 
 
-def create_registration_folder_for_brats_subject(subject_id: str) -> str:
+def create_registration_folder_for_brats_subject(
+    dataset_name_constant: str, subject_id: str
+) -> str:
     """
     Creates the registration folder for a BRATS subject.
 
@@ -26,7 +28,7 @@ def create_registration_folder_for_brats_subject(subject_id: str) -> str:
     Returns:
         str: path to the registration folder
     """
-    subject_folder = os.path.join(BRATS_REGISTRATION_FOLDER, subject_id)
+    subject_folder = os.path.join(dataset_name_constant, subject_id)
 
     if not os.path.exists(subject_folder):
         os.makedirs(subject_folder)
