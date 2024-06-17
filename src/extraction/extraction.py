@@ -1,4 +1,4 @@
-from common.io.path_operations import (
+from src.common.io.path_operations import (
     extract_file_name_from_path,
     extract_save_dir_from_path,
     get_file_list_from_pattern,
@@ -47,6 +47,7 @@ class Extractor:
         # Get Save_path
 
         save_path = extract_save_dir_from_path(image_file)
+
         filename = extract_file_name_from_path(image_file)
 
         # Save Brain Image

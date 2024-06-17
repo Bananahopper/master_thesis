@@ -4,12 +4,12 @@ import nibabel as nib
 import matplotlib.pyplot as plt
 import os
 import logging
-from analysis import ANALYSIS_FOLDER, ANALYSIS_FOLDER_CAPTK
-from common.io.path_operations import (
+from src.analysis import ANALYSIS_FOLDER, ANALYSIS_FOLDER_CAPTK
+from src.common.io.path_operations import (
     extract_srf_from_prob_dist_path,
     get_file_list_from_pattern,
 )
-from constants import MNI_ATLAS_PATH
+from src.constants import MNI_ATLAS_PATH
 from src.constants.utils import get_edema_value
 
 
@@ -117,6 +117,8 @@ class ProbDist:
             probability_mask=True,
         )
 
+        logging.info(f"Result array dimensions: {result_array_whole_tumor.shape}")
+
         len_files = len(file_list)
 
         self.visualize_surface_plot(
@@ -136,7 +138,8 @@ class ProbDist:
         file_map,
         probability_mask=False,
     ):
-        img = nib.Nifti2Image(result_array, affine, header, extra, file_map)
+
+        img = nib.Nifti1Image(result_array, affine, header, extra, file_map)
 
         if not os.path.exists(f"{self.SAVE_PATH}/{registration_modality}"):
             os.makedirs(f"{self.SAVE_PATH}/{registration_modality}")
@@ -173,21 +176,31 @@ class ProbDist:
     def create_tumor_probability_mask(self, result_array):
         result_probability_mask_array = result_array / np.sum(result_array)
 
-        mask = (result_probability_mask_array >= 0) & (
-            result_probability_mask_array <= 0.5
+        max_value = np.max(result_probability_mask_array)
+
+        mask = (result_probability_mask_array >= (max_value / 2)) & (
+            result_probability_mask_array <= max_value
         )
 
-        result_probability_mask = result_probability_mask_array[mask]
+        result_probability_mask = np.where(mask, result_probability_mask_array, 0)
 
         return result_probability_mask
 
     def visualize_surface_plot(
         self, result_array, registration_modality, dataset_name, len_files
     ):
+
+        collapsed_array_dim = result_array.shape
+        dimension_multiplication_factor = 1
+        for int in collapsed_array_dim[:2]:
+            dimension_multiplication_factor *= int
+
         collapsed_array = np.sum(result_array, axis=2)
-        collapsed_array_sum = len_files
-        collapsed_array_plot = collapsed_array / collapsed_array_sum
-        collapsed_array_plot = collapsed_array_plot
+        collapsed_array_plot = collapsed_array / (
+            collapsed_array_dim[2] * len_files * dimension_multiplication_factor
+        )
+
+        logging.info(f"This should be 1:{sum(collapsed_array_plot.flatten())}")
 
         x = np.arange(0, collapsed_array.shape[1])
         y = np.arange(0, collapsed_array.shape[0])
@@ -195,7 +208,7 @@ class ProbDist:
 
         fig = plt.figure()
         ax = fig.add_subplot(111, projection="3d")
-        ax.plot_surface(X, Y, collapsed_array, cmap="viridis")
+        ax.plot_surface(X, Y, collapsed_array_plot, cmap="viridis")
 
         ax.set_title(
             f"Collapsed Array Surface Plot - {self.dataset_name} - {'whole_tumor' if self.whole_tumor == True else 'no_edema'}"

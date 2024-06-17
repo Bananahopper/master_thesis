@@ -1,5 +1,5 @@
 import os
-from constants import WORK_PATH_CAPTK
+from src.constants import WORK_PATH_CAPTK
 from src.analysis.prob_dist import ProbDist
 import argparse
 import logging

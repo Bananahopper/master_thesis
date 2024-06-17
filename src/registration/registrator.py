@@ -1,6 +1,5 @@
 import logging
 import os
-from src.common.debugging import check_sub_with_missing_files
 from src.common.io.command_operations import run_commands
 from src.common.io.path_operations import (
     create_registration_folder_for_subject_file_path,
@@ -80,15 +79,7 @@ class Registrator:
         logging.info("Number of labels: " + str(len(label_list)))
 
         if len(file_list) != len(label_list):
-
-            sub_missing_modality = check_sub_with_missing_files(file_list, label_list)
-
-            logging.error(
-                f"The number of files and labels must be the same. Images: {len(file_list)}, Labels: {len(label_list)}. Missing modality or label in {sub_missing_modality}"
-            )
-            raise ValueError(
-                f"The number of files and labels must be the same. Images: {len(file_list)}, Labels: {len(label_list)}. Missing modality or label in {sub_missing_modality}"
-            )
+            raise ValueError("Number of files and labels must be the same")
 
         for idx, (file, label) in enumerate(zip(file_list, label_list)):
             logging.info(str(idx) + "/" + str(len(file_list)))

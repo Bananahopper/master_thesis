@@ -1,6 +1,6 @@
 import os
 from src.analysis import WORK_PATH_CAPTK
-from src.constants import DATA_PATH, REGISTRATION_FOLDER
+from src.constants import DATA_PATH, REGISTRATION_FOLDER, REGISTRATION_FOLDER_CAPTK
 
 BRATS_NAME = "Brats2021_wTumor"
 BRATS_SSA_NAME = "Brats-2023-SSA"
@@ -18,6 +18,11 @@ BRATS_REGISTRATION_FOLDER = os.path.join(REGISTRATION_FOLDER, BRATS_NAME)
 
 BRATS_CAPTK_FOLDER_PATH = os.path.join(WORK_PATH_CAPTK, "datasets", BRATS_NAME)
 BRATS_SSA_CAPTK_FOLDER_PATH = os.path.join(WORK_PATH_CAPTK, "datasets", BRATS_SSA_NAME)
+
+BRATS_SSA_CAPTK_REGISTRATION_FOLDER = os.path.join(
+    REGISTRATION_FOLDER_CAPTK, BRATS_SSA_NAME
+)
+BRATS_CAPTK_REGISTRATION_FOLDER = os.path.join(REGISTRATION_FOLDER_CAPTK, BRATS_NAME)
 
 # ============================ Tumor characteristics constants ============================
 

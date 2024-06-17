@@ -1,0 +1,23 @@
+Labels,Tumor in region
+void,8.048373262165635
+left cerebral white matter,20.57441710206261
+left cerebral cortex,16.404690876464652
+left lateral ventrical,1.3315375281697868
+left thalamus,1.7760604244209277
+left caudate,0.5635569574459104
+left putamen,0.8075985298524246
+left pallidum,0.24100947702783704
+brain-stem,5.984604410787591
+left hippocampus,0.42755471859074173
+left amygdala,0.15295303768016213
+left accumbens,0.09624693756012187
+right cerebral white matter,22.20658997195959
+right cerebral cortex,15.254337799463489
+right lateral ventricle,1.332792789693201
+right thalamus,1.8613795747057078
+right caudate,0.854499167393082
+right putamen,0.8118239804834247
+right pallidum,0.2835589769603559
+right hippocampus,0.5150801325402864
+right amygdala,0.36325169885583114
+right accumbens,0.108082645716569

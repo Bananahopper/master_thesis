@@ -166,3 +166,6 @@ test.ipynb
 test/
 commands_i_ran.txt 
 testing.py
+data_test/
+data_test/*
+testing.py
